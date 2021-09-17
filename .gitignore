@@ -82,4 +82,6 @@ fabric.properties
 !.yarn/sdks
 !.yarn/versions
 
+dist/
+
 
