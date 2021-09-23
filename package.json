@@ -4,6 +4,7 @@
   "main": "index.js",
   "repository": "git@github.com:ConsenSysMesh/daorectory.git",
   "author": "nathan-knight <knathanknight@gmail.com>",
+  "type": "commonjs",
   "workspaces": [
     "packages/*"
   ]
