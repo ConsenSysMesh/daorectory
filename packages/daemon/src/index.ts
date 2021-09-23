@@ -1,10 +1,5 @@
-import { config } from 'dotenv';
-import path from 'path';
+import './env';
 import discordClient from './discord/discord-client';
-
-config({
-  path: path.resolve('./.env'),
-});
 
 console.log('Starting Daemon...');
 
