@@ -85,4 +85,5 @@ fabric.properties
 dist/
 
 .env
-
+**/node_modules
+**/database.sqlite
