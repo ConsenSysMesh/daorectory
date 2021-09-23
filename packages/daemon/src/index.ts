@@ -1,5 +1,6 @@
 import './env';
 import discordClient from './discord/discord-client';
+import { initDids, getAllDids } from './veramo/did-manager';
 
 console.log('Starting Daemon...');
 
@@ -11,3 +12,15 @@ discordClient.on('interactionCreate', async (interaction) => {
     });
   }
 });
+
+const main = async () => {
+  await initDids(); // creates Daemon service DID if none exists
+  // just some logic to demonstrate that Veramo data store works
+  const identifiers = await getAllDids();
+  console.log(`There are ${identifiers.length} identifiers`);
+  identifiers.forEach((id) => {
+    console.log(id);
+  });
+}
+
+main().catch(console.error);

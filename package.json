@@ -7,5 +7,8 @@
   "type": "commonjs",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "get-secrets": "aws s3 cp s3://tmnt-secrets-development/ethonline2021/.env secrets && touch packages/daemon/.env && cat secrets >> packages/daemon/.env && rm secrets"
+  }
 }
