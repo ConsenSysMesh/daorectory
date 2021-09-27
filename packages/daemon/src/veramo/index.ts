@@ -21,10 +21,10 @@ const DATABASE_FILE = 'database.sqlite';
 // Project ID from infura https://www.infura.io
 const INFURA_PROJECT_ID = process.env.INFURA_PROJECT_ID;
 const VERAMO_SECRET_KEY = process.env.VERAMO_SECRET_KEY;
-const SERVICE_DID_ALIAS = 'DAEMON_DID';
-const ETH_NETWORK = 'rinkeby';
-const DID_PROVIDER = `did:ethr:${ETH_NETWORK}`;
-const KMS = 'local';
+export const SERVICE_DID_ALIAS = 'DAEMON_DID';
+export const ETH_NETWORK = 'rinkeby';
+export const DID_PROVIDER = `did:ethr:${ETH_NETWORK}`;
+export const KMS = 'local';
 
 const dbExists = fs.existsSync(DATABASE_FILE);
 const dbConnection = createConnection({
@@ -66,12 +66,3 @@ export const agent = createAgent<IDIDManager & IKeyManager & IDataStore & IDataS
     }),
   ],
 });
-
-export const init = async () => {
-  // make sure Veramo agent has required initial contents
-  await agent.didManagerGetOrCreate({
-    alias: SERVICE_DID_ALIAS,
-    provider: DID_PROVIDER,
-    kms: KMS,
-  });
-};
