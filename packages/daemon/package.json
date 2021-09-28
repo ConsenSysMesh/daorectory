@@ -25,10 +25,12 @@
     "@veramo/did-resolver": "^3.0.0",
     "@veramo/key-manager": "^3.0.0",
     "@veramo/kms-local": "^3.0.0",
+    "did-resolver": "3.1.0",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "ethr-did-resolver": "^4.3.4",
     "sqlite3": "^5.0.2",
+    "typeorm": "^0.2.37",
     "web-did-resolver": "^2.0.4"
   }
 }

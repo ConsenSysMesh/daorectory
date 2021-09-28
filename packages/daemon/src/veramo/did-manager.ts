@@ -3,19 +3,18 @@ import { agent, SERVICE_DID_ALIAS, DID_PROVIDER, KMS } from './index';
 /**
  * Truing up the local Veramo DID store.
  */
-export const initDids = async () => {
+export const initDids = async () =>
   // Create our service's DID to sign stuff on our behalf (happens once per environment and is a no-op afterwards).
-  await agent.didManagerGetOrCreate({
+  agent.didManagerGetOrCreate({
     alias: SERVICE_DID_ALIAS,
     provider: DID_PROVIDER,
     kms: KMS,
   });
-};
 
 /**
  * Gets all DIDs in the store. Just a debug gimmick.
  */
-export const getAllDids = async () => agent.didManagerFind();
+export const getAllDids = async () => agent.didManagerFind({ provider: DID_PROVIDER });
 
 /**
  * Creates a new DID and labels it with the given alias for subsequent lookup.
