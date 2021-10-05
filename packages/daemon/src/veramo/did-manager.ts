@@ -1,15 +1,44 @@
-import { agent, SERVICE_DID_ALIAS, DID_PROVIDER, KMS } from './index';
+import { createVeramoAgent, SERVICE_DID_ALIAS, DID_PROVIDER, KMS } from './index';
+import { IDataStore, IDIDManager, IKeyManager, IResolver, TAgent} from "@veramo/core";
+import { IDataStoreORM } from "@veramo/data-store";
+import { Connection } from "typeorm";
+import { VeramoAgentConfigOverrides } from "./veramoAgentConfig";
+import fs from "fs";
 
+// requires calling initVeramo to create this local singleton agent and dbConnection
+let agent: TAgent<IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver>;
+let dbConnection: Connection;
+let dbFile: string;
 /**
  * Truing up the local Veramo DID store.
  */
-export const initDids = async () =>
+export const initVeramo = async (overrides: VeramoAgentConfigOverrides = null) => {
+  dbFile = overrides?.dbFile;
+  ({ agent, dbConnection } = (await createVeramoAgent(overrides)));
   // Create our service's DID to sign stuff on our behalf (happens once per environment and is a no-op afterwards).
-  agent.didManagerGetOrCreate({
+  await agent.didManagerGetOrCreate({
     alias: SERVICE_DID_ALIAS,
     provider: DID_PROVIDER,
     kms: KMS,
   });
+
+  return agent;
+};
+
+/**
+ * A utility for integration tests. Don't use in production code!
+ */
+export const _clearVeramo = async () => {
+  try {
+    await dbConnection.dropDatabase();
+    await dbConnection.close();
+    if (dbFile) {
+      fs.rmSync(dbFile);
+    }
+  } catch (e) {
+    console.error('Error in _clearVeramo', e);
+  }
+};
 
 /**
  * Gets all DIDs in the store. Just a debug gimmick.
