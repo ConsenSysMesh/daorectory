@@ -30,8 +30,8 @@ export const initVeramo = async (overrides: VeramoAgentConfigOverrides = null) =
  */
 export const _clearVeramo = async () => {
   try {
-    await (await dbConnection).dropDatabase();
-    await (await dbConnection).close();
+    await dbConnection.dropDatabase();
+    await dbConnection.close();
     if (dbFile) {
       fs.rmSync(dbFile);
     }
@@ -93,3 +93,7 @@ const _createVc = async (toDidAlias:string, fromDidAlias:string, credentialType:
     save: true,
   });
 }
+
+const findVc = async () => {
+  agent.didManagerFind()
+};
