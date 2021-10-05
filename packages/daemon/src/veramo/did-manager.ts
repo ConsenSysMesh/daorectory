@@ -93,7 +93,3 @@ const _createVc = async (toDidAlias:string, fromDidAlias:string, credentialType:
     save: true,
   });
 }
-
-const findVc = async () => {
-  agent.didManagerFind()
-};
