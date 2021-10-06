@@ -1,14 +1,18 @@
 import { createVeramoAgent, SERVICE_DID_ALIAS, DID_PROVIDER, KMS } from './index';
-import { IDataStore, IDIDManager, IKeyManager, IResolver, TAgent} from "@veramo/core";
-import { IDataStoreORM } from "@veramo/data-store";
+import {IDataStore, IDIDManager, IIdentifier, IKeyManager, IResolver, TAgent} from "@veramo/core";
+import {IDataStoreORM} from "@veramo/data-store";
+import { ICredentialIssuer } from '@veramo/credential-w3c'
 import { Connection } from "typeorm";
-import { VeramoAgentConfigOverrides } from "./veramoAgentConfig";
+import {VeramoAgentConfigOverrides, VcTypes, KudoVcSubject} from "./veramo-types";
 import fs from "fs";
 
 // requires calling initVeramo to create this local singleton agent and dbConnection
-let agent: TAgent<IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver>;
+let agent: TAgent<IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & ICredentialIssuer>;
 let dbConnection: Connection;
 let dbFile: string;
+let daemonDid: IIdentifier;
+let daemonId: string;
+
 /**
  * Truing up the local Veramo DID store.
  */
@@ -16,12 +20,12 @@ export const initVeramo = async (overrides: VeramoAgentConfigOverrides = null) =
   dbFile = overrides?.dbFile;
   ({ agent, dbConnection } = (await createVeramoAgent(overrides)));
   // Create our service's DID to sign stuff on our behalf (happens once per environment and is a no-op afterwards).
-  await agent.didManagerGetOrCreate({
+  daemonDid = await agent.didManagerGetOrCreate({
     alias: SERVICE_DID_ALIAS,
     provider: DID_PROVIDER,
     kms: KMS,
   });
-
+  daemonId = daemonDid.did;
   return agent;
 };
 
@@ -45,11 +49,26 @@ export const _clearVeramo = async () => {
  */
 export const getAllDids = async () => agent.didManagerFind({ provider: DID_PROVIDER });
 
+export const getAllVcs = async () => agent.dataStoreORMGetVerifiableCredentials({});
+
+const _daoAlias = (name:string) => `dao_${name}`;
+export const createDaoDid = async (name:string) => findOrCreateDid(_daoAlias(name));
+
+const _punkAlias = (name:string) => `punk_${name}`;
+export const createPunkDid = async (name:string) => findOrCreateDid(_punkAlias(name));
+
+export const findOrCreateDid = async (alias:string) =>
+  agent.didManagerGetOrCreate({
+    alias,
+    provider: DID_PROVIDER,
+    kms: KMS,
+  });
+
 /**
  * Creates a new DID and labels it with the given alias for subsequent lookup.
  * @param alias
  */
-export const createDid = async (alias:string) =>
+export const _createDid = async (alias:string) =>
   agent.didManagerCreate({
     alias,
     provider: DID_PROVIDER,
@@ -59,23 +78,29 @@ export const createDid = async (alias:string) =>
 // export const deleteDid = async (alias:string) =>
 //   agent.didManagerDelete({ alias });
 
-export const findDaemonDid = async () => (await agent.didManagerFind({ alias: SERVICE_DID_ALIAS }))[0];
-export const findDid = async (alias:string) => (await agent.didManagerFind({ alias }))[0];
+export const findDidByAlias = async (alias:string) => {
+  const matchedDids = await agent.didManagerFind({ alias, provider: DID_PROVIDER });
+  return matchedDids[0];
+};
 
-export const createKudosVc = async (toDidAlias:string, fromDidAlias:string, kudosDescription:string) => {
+export const findDaemonDid = async () => daemonDid || findDidByAlias(SERVICE_DID_ALIAS);
+export const findDaoDid = async (name:string) => findDidByAlias(_daoAlias(name));
+export const findPunkDid = async (name:string) => findDidByAlias(_punkAlias(name));
+export const findOrCreateDao = async (name:string) => findOrCreateDid(_daoAlias(name));
+export const findOrCreatePunk = async (name:string) => findOrCreateDid(_punkAlias(name));
+
+export const createKudosVc = async (forPunk:string, fromPunk:string, kudos:KudoVcSubject) => {
+  const forDid = await findOrCreatePunk(forPunk);
+  const fromDid = await findOrCreatePunk(fromPunk);
   const verifiableCredential = await _createVc(
-    toDidAlias,
-    fromDidAlias,
-    'kudos',
-    {
-      kudos: kudosDescription,
-    });
+    forDid,
+    fromDid,
+    VcTypes.Kudos,
+    kudos);
   return verifiableCredential;
 };
 
-const _createVc = async (toDidAlias:string, fromDidAlias:string, credentialType:string, credential:object) => {
-  const fromDid = await findDid(fromDidAlias);
-  const toDid = await findDid(toDidAlias);
+const _createVc = async (forDid:IIdentifier, fromDid:IIdentifier, credentialType:string, credential:KudoVcSubject) => {
   // TODO: define some VC schemas
  return agent.createVerifiableCredential({
     credential: {
@@ -84,12 +109,21 @@ const _createVc = async (toDidAlias:string, fromDidAlias:string, credentialType:
       type: ['VerifiableCredential', credentialType],
       issuanceDate: new Date().toISOString(),
       credentialSubject: {
-        ...credential, // TODO: is this where credential contents go?
-        id: toDid.did,
-        name: toDidAlias, // TODO: will our aliases be descriptive enough to use as name?
+        ...credential,
+        id: forDid.did,
       },
     },
     proofFormat: 'jwt',
     save: true,
   });
 }
+
+export const findVcsForPunk = async (punk: string, vcType: string = VcTypes.Kudos) => {
+  const recipientDid = await findDidByAlias(_punkAlias(punk));
+  return agent.dataStoreORMGetVerifiableCredentials({
+    where: [
+      { column: 'subject', value: [recipientDid.did] },
+      // { column: 'type', value: ['VerifiableCredential', vcType] },
+    ]
+  })
+};

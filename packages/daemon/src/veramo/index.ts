@@ -12,10 +12,11 @@ import { getResolver as ethrDidResolver } from 'ethr-did-resolver';
 import { getResolver as webDidResolver } from 'web-did-resolver';
 
 // Storage plugin using TypeOrm
-import { Entities, KeyStore, DIDStore, IDataStoreORM, PrivateKeyStore } from '@veramo/data-store';
+import { Entities, KeyStore, DIDStore, DataStore, IDataStoreORM, DataStoreORM, PrivateKeyStore, migrations } from '@veramo/data-store';
+import { CredentialIssuer, ICredentialIssuer } from '@veramo/credential-w3c'
 // TypeORM is installed with `@veramo/data-store`
 import { createConnection } from 'typeorm';
-import { VeramoAgentConfigOverrides } from "./veramoAgentConfig";
+import { VeramoAgentConfigOverrides } from "./veramo-types";
 // This will be the name for the local sqlite database for demo purposes
 const DATABASE_FILE = 'database.sqlite';
 
@@ -31,19 +32,23 @@ const createVeramoDbConnection = (overrides: VeramoAgentConfigOverrides = null) 
   const { dbFile = DATABASE_FILE } = overrides || {};
   const dbExists = fs.existsSync(dbFile);
   return createConnection({
+    name: 'test',
     type: 'sqlite',
     database: dbFile,
     logging: ['error', 'info', 'warn'],
     // TODO: we wouldn't want to automagically do this in production
-    synchronize: !dbExists, // if DB file doesn't exist, allow the ORM to initialize Veramo schema
+    // synchronize: !dbExists, // if DB file doesn't exist, allow the ORM to initialize Veramo schema
     entities: Entities,
+    synchronize: false,
+    migrations,
+    migrationsRun: true,
   });
 };
 
 export const createVeramoAgent = async (overrides: VeramoAgentConfigOverrides = null) => {
   const { veramoSecret = VERAMO_SECRET_KEY, infuraProjectId = INFURA_PROJECT_ID } = overrides || {};
   const dbConnection = createVeramoDbConnection(overrides);
-  const agent = createAgent<IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver>({
+  const agent = createAgent<IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & ICredentialIssuer>({
     plugins: [
       new KeyManager({
         store: new KeyStore(dbConnection),
@@ -71,6 +76,9 @@ export const createVeramoAgent = async (overrides: VeramoAgentConfigOverrides = 
           ...webDidResolver(),
         }),
       }),
+      new DataStore(dbConnection),
+      new DataStoreORM(dbConnection),
+      new CredentialIssuer(),
     ],
   });
   const con = await dbConnection;
