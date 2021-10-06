@@ -41,20 +41,43 @@ describe('did-manager', () => {
     expect(savedDid).not.toBeNil();
   });
 
-  it('should be able to write a VC and then find it by type', async () => {
-    const forDid = await createPunkDid('giverPunk');
-    const fromDid = await createPunkDid('receiverPunk');
-    const vc = await createKudosVc(
-      forDid.alias,
-      fromDid.alias,
+  it('should be able to write a VC for existing punks and then find it by recipient name', async () => {
+    const forDid = await createPunkDid('receiverPunk');
+    const fromDid = await createPunkDid('giverPunk');
+    await createKudosVc(
+      'receiverPunk',
+      'giverPunk',
       {
         description: 'You did great on the thing',
-        createdBy: forDid.alias,
+        createdBy: 'giverPunk',
       });
     // console.log('Created VC', vc);
-    const savedVc = await findVcsForPunk(forDid.alias, VcTypes.Kudos);
-    // console.log('Queried VC', vc);
-    // expect(savedVc).toBeArray();
-    expect(savedVc).toHaveLength(1);
+    const savedVcs = await findVcsForPunk('receiverPunk', VcTypes.Kudos);
+    expect(savedVcs).toHaveLength(1);
+    // console.log('Queried VC', savedVcs[0]);
+    const { verifiableCredential } = savedVcs[0];
+    const { credentialSubject } = verifiableCredential;
+    expect(verifiableCredential.issuer.id).toEqual(fromDid.did);
+    expect(credentialSubject.id).toEqual(forDid.did);
+    expect(credentialSubject.description).toEqual('You did great on the thing');
+  });
+
+  it('should be able to write a VC for non-existent punks and then find it by recipient name', async () => {
+    await createKudosVc(
+      'receiverPunk2',
+      'giverPunk2',
+      {
+        description: 'You did great on the thing2',
+        createdBy: 'giverPunk2',
+      });
+    // console.log('Created VC', vc);
+    const savedVcs = await findVcsForPunk('receiverPunk2', VcTypes.Kudos);
+    expect(savedVcs).toHaveLength(1);
+    // console.log('Queried VC', savedVcs[0]);
+    const { verifiableCredential } = savedVcs[0];
+    const { credentialSubject } = verifiableCredential;
+    expect(verifiableCredential.issuer.id).not.toBeNil();
+    expect(credentialSubject.id).not.toBeNil();
+    expect(credentialSubject.description).toEqual('You did great on the thing2');
   });
 });

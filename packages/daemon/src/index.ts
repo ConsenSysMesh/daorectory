@@ -3,6 +3,7 @@ import discordClient from './discord/discord-client';
 import {initVeramo, getAllDids, getAllVcs} from './veramo/did-manager';
 import { IIdentifier } from "@veramo/core";
 import { UniqueVerifiableCredential } from "@veramo/data-store";
+import './api';
 
 console.log('Starting Daemon...');
 
@@ -28,6 +29,8 @@ const main = async () => {
   vcs.forEach((vc: UniqueVerifiableCredential) => {
     console.log(vc);
   });
+
+
 }
 
 main().catch(console.error);
