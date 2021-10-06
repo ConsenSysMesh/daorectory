@@ -9,21 +9,28 @@ import Listing from "./Listing";
 import Profile from "./Profile";
 import { Objects, Pages } from "../config/constants";
 
+export const Routes = {
+  Daos: `/${Pages.Daos}`,
+  Punks: `/${Pages.Punks}`,
+  Dao: `/${Pages.Doa}/:id`,
+  Punk: `/${Pages.Punk}/:id`,
+};
+
 const Router = () => (
   <Switch>
-    <Route path={`/${Pages.Doas}`}>
+    <Route path={Routes.Daos}>
       <Listing type={Objects.Doa} />
     </Route>
-    <Route path={`/${Pages.Punks}`}>
+    <Route path={Routes.Punks}>
       <Listing type={Objects.Punk} />
     </Route>
-    <Route path={`/${Pages.Doa}/:id`}>
+    <Route path={Routes.Dao}>
       <Profile type={Objects.Punk} />
     </Route>
-    <Route path={`/${Pages.Punk}/:id`}>
+    <Route path={Routes.Punk}>
       <Profile type={Objects.Punk} />
     </Route>
-    <Redirect to={`/${Pages.Doas}`} />
+    <Redirect to={Routes.Daos} />
   </Switch>
 );
 
