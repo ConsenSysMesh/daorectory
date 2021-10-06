@@ -32,6 +32,7 @@ const createVeramoDbConnection = (overrides: VeramoAgentConfigOverrides = null) 
   const { dbFile = DATABASE_FILE } = overrides || {};
   const dbExists = fs.existsSync(dbFile);
   return createConnection({
+    name: 'test',
     type: 'sqlite',
     database: dbFile,
     logging: ['error', 'info', 'warn'],
@@ -40,7 +41,7 @@ const createVeramoDbConnection = (overrides: VeramoAgentConfigOverrides = null) 
     entities: Entities,
     synchronize: false,
     migrations,
-    migrationsRun: dbExists,
+    migrationsRun: true,
   });
 };
 
