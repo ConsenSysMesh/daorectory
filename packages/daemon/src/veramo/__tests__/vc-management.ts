@@ -1,6 +1,15 @@
 // import { describe, it, xit, beforeAll, afterAll, expect } from '@types/jest';
 // import 'jest-extended';
-import {initVeramo, _clearVeramo, findDaemonDid, createDid, findDidByAlias, createKudosVc, findVcsByAlias} from '../did-manager';
+import {
+  initVeramo,
+  _clearVeramo,
+  findDaemonDid,
+  createPunkDid,
+  findDidByAlias,
+  createKudosVc,
+  findVcsForPunk,
+  findPunkDid, createDaoDid, findDaoDid
+} from '../did-manager';
 import {VcTypes} from "../veramo-types";
 
 describe('did-manager', () => {
@@ -20,18 +29,30 @@ describe('did-manager', () => {
     expect(daemonDid).not.toBeNil();
   });
 
-  it('should be able to create a new DID and find it by its alias', async () => {
-    const newDid = await createDid('foo');
-    const savedDid = await findDidByAlias('foo');
+  it('should be able to create a new punk DID and find it', async () => {
+    const newDid = await createPunkDid('fooPunk');
+    const savedDid = await findPunkDid('fooPunk');
+    expect(savedDid).not.toBeNil();
+  });
+
+  it('should be able to create a new DAO DID and find it', async () => {
+    const newDid = await createDaoDid('fooDao');
+    const savedDid = await findDaoDid('fooDao');
     expect(savedDid).not.toBeNil();
   });
 
   it('should be able to write a VC and then find it by type', async () => {
-    const daemonDid = await findDaemonDid();
-    const recipientDid = await createDid('KudosGuy');
-    const vc = await createKudosVc(recipientDid.alias, 'You did great on the thing');
+    const forDid = await createPunkDid('giverPunk');
+    const fromDid = await createPunkDid('receiverPunk');
+    const vc = await createKudosVc(
+      forDid.alias,
+      fromDid.alias,
+      {
+        description: 'You did great on the thing',
+        createdBy: forDid.alias,
+      });
     // console.log('Created VC', vc);
-    const savedVc = await findVcsByAlias(recipientDid.alias, VcTypes.Kudos);
+    const savedVc = await findVcsForPunk(forDid.alias, VcTypes.Kudos);
     // console.log('Queried VC', vc);
     // expect(savedVc).toBeArray();
     expect(savedVc).toHaveLength(1);

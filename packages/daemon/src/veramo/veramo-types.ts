@@ -7,3 +7,8 @@ export declare type VeramoAgentConfigOverrides = {
 export enum VcTypes {
   Kudos = 'kudos',
 };
+
+export declare type KudoVcSubject = {
+  description: string,
+  createdBy: string, // discord id?
+};
