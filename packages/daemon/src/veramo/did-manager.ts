@@ -108,7 +108,7 @@ export const findVcsByAlias = async (didAlias: string, vcType: string = VcTypes.
   return agent.dataStoreORMGetVerifiableCredentials({
     where: [
       { column: 'subject', value: [recipientDid.did] },
-      { column: 'type', value: ['VerifiableCredential', vcType] },
+      // { column: 'type', value: ['VerifiableCredential', vcType] },
     ]
   })
 };
