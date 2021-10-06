@@ -12,7 +12,7 @@ import { getResolver as ethrDidResolver } from 'ethr-did-resolver';
 import { getResolver as webDidResolver } from 'web-did-resolver';
 
 // Storage plugin using TypeOrm
-import { Entities, KeyStore, DIDStore, DataStore, IDataStoreORM, DataStoreORM, PrivateKeyStore } from '@veramo/data-store';
+import { Entities, KeyStore, DIDStore, DataStore, IDataStoreORM, DataStoreORM, PrivateKeyStore, migrations } from '@veramo/data-store';
 import { CredentialIssuer, ICredentialIssuer } from '@veramo/credential-w3c'
 // TypeORM is installed with `@veramo/data-store`
 import { createConnection } from 'typeorm';
@@ -36,8 +36,11 @@ const createVeramoDbConnection = (overrides: VeramoAgentConfigOverrides = null) 
     database: dbFile,
     logging: ['error', 'info', 'warn'],
     // TODO: we wouldn't want to automagically do this in production
-    synchronize: !dbExists, // if DB file doesn't exist, allow the ORM to initialize Veramo schema
+    // synchronize: !dbExists, // if DB file doesn't exist, allow the ORM to initialize Veramo schema
     entities: Entities,
+    synchronize: false,
+    migrations,
+    migrationsRun: dbExists,
   });
 };
 
