@@ -86,4 +86,4 @@ dist/
 
 .env
 **/node_modules
-**/database.sqlite
+**/*.sqlite
