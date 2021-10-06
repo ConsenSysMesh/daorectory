@@ -12,7 +12,8 @@ import { getResolver as ethrDidResolver } from 'ethr-did-resolver';
 import { getResolver as webDidResolver } from 'web-did-resolver';
 
 // Storage plugin using TypeOrm
-import { Entities, KeyStore, DIDStore, IDataStoreORM, PrivateKeyStore } from '@veramo/data-store';
+import { Entities, KeyStore, DIDStore, DataStore, IDataStoreORM, DataStoreORM, PrivateKeyStore } from '@veramo/data-store';
+import { CredentialIssuer, ICredentialIssuer } from '@veramo/credential-w3c'
 // TypeORM is installed with `@veramo/data-store`
 import { createConnection } from 'typeorm';
 import { VeramoAgentConfigOverrides } from "./veramoAgentConfig";
@@ -43,7 +44,7 @@ const createVeramoDbConnection = (overrides: VeramoAgentConfigOverrides = null) 
 export const createVeramoAgent = async (overrides: VeramoAgentConfigOverrides = null) => {
   const { veramoSecret = VERAMO_SECRET_KEY, infuraProjectId = INFURA_PROJECT_ID } = overrides || {};
   const dbConnection = createVeramoDbConnection(overrides);
-  const agent = createAgent<IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver>({
+  const agent = createAgent<IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & ICredentialIssuer>({
     plugins: [
       new KeyManager({
         store: new KeyStore(dbConnection),
@@ -71,6 +72,9 @@ export const createVeramoAgent = async (overrides: VeramoAgentConfigOverrides = 
           ...webDidResolver(),
         }),
       }),
+      new DataStore(dbConnection),
+      new DataStoreORM(dbConnection),
+      new CredentialIssuer(),
     ],
   });
   const con = await dbConnection;

@@ -1,7 +1,8 @@
 import './env';
 import discordClient from './discord/discord-client';
-import { initVeramo, getAllDids } from './veramo/did-manager';
+import {initVeramo, getAllDids, getAllVcs} from './veramo/did-manager';
 import { IIdentifier } from "@veramo/core";
+import { UniqueVerifiableCredential } from "@veramo/data-store";
 
 console.log('Starting Daemon...');
 
@@ -21,6 +22,11 @@ const main = async () => {
   console.log(`There are ${identifiers.length} identifiers`);
   identifiers.forEach((id: IIdentifier) => {
     console.log(id);
+  });
+  const vcs = await getAllVcs();
+  console.log(`There are ${vcs.length} VCs`);
+  vcs.forEach((vc: UniqueVerifiableCredential) => {
+    console.log(vc);
   });
 }
 
