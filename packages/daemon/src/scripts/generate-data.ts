@@ -34,7 +34,7 @@ const main = async () => {
     avatarUrl: 'https://cdn.discordapp.com/avatars/510489920968589318/9f2fc3dad2d3a2f018b34f593f77cf9e.png?size=64',
   });
   const dao1Punk3 = 'intenseIndividual#3456';
-  await createPunkProfileVc(dao1Punk2, {
+  await createPunkProfileVc(dao1Punk3, {
     name: dao1Punk3,
     discordId: 'punkDiscordId13',
     avatarUrl: 'https://cdn.discordapp.com/avatars/510490140758507546/f6af831ef51852741a2f430749dfb3bf.png?size=64',
