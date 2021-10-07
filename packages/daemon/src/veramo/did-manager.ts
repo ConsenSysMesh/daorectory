@@ -173,22 +173,12 @@ const _createVc = async (forDid:IIdentifier, fromDid:IIdentifier, credentialType
 
 export const findVcsForDao = async (dao: string, vcType: string = VcTypes.Kudos) => {
   const recipientDid = await findDidByAlias(_daoAlias(dao));
-  return agent.dataStoreORMGetVerifiableCredentials({
-    where: [
-      { column: 'subject', value: [recipientDid.did] },
-      { column: 'type', value: [`VerifiableCredential,${vcType}`] },
-    ]
-  })
+  return findVcsForDid(recipientDid.did, vcType);
 };
 
 export const findVcsForPunk = async (punk: string, vcType: string = VcTypes.Kudos) => {
   const recipientDid = await findDidByAlias(_punkAlias(punk));
-  return agent.dataStoreORMGetVerifiableCredentials({
-    where: [
-      { column: 'subject', value: [recipientDid.did] },
-      { column: 'type', value: [`VerifiableCredential,${vcType}`] },
-    ]
-  })
+  return findVcsForDid(recipientDid.did, vcType);
 };
 
 export const findVcsForDid = async (did: string, vcType: string = VcTypes.Kudos) =>

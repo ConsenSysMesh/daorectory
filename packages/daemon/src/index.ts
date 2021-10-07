@@ -18,6 +18,11 @@ discordClient.on('interactionCreate', async (interaction) => {
 
 const main = async () => {
   await initVeramo(); // creates Daemon service DID if none exists
+
+  // await _debugPrints();
+}
+
+const _debugPrints = async () => {
   // just some logic to demonstrate that Veramo data store works
   const identifiers = await getAllDids();
   console.log(`There are ${identifiers.length} identifiers`);
@@ -29,8 +34,6 @@ const main = async () => {
   vcs.forEach((vc: UniqueVerifiableCredential) => {
     console.log(vc);
   });
-
-
 }
 
 main().catch(console.error);
