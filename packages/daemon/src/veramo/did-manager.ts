@@ -125,7 +125,7 @@ export const findVcsForPunk = async (punk: string, vcType: string = VcTypes.Kudo
   return agent.dataStoreORMGetVerifiableCredentials({
     where: [
       { column: 'subject', value: [recipientDid.did] },
-      // { column: 'type', value: ['VerifiableCredential', vcType] },
+      { column: 'type', value: [`VerifiableCredential,${vcType}`] },
     ]
   })
 };
@@ -134,6 +134,6 @@ export const findVcsForDid = async (did: string, vcType: string = VcTypes.Kudos)
   agent.dataStoreORMGetVerifiableCredentials({
     where: [
       { column: 'subject', value: [did] },
-      // { column: 'type', value: ['VerifiableCredential', vcType] },
+      { column: 'type', value: [`VerifiableCredential,${vcType}`] },
     ]
   })

@@ -64,6 +64,12 @@ describe('did-manager', () => {
     expect(credentialSubject.id).toEqual(forDid.did);
     expect(credentialSubject.daoId).toEqual(daoDid.did);
     expect(credentialSubject.description).toEqual('You did great on the thing');
+
+    // console.log(
+    //   JSON.stringify(daoDid, null, 2),
+    //   JSON.stringify(forDid, null, 2),
+    //   JSON.stringify(savedVcs, null, 2),
+    //   );
   });
 
   it('should be able to write a VC for non-existent punks and then find it by recipient name', async () => {
