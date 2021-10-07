@@ -1,5 +1,13 @@
 import '../env';
-import { initVeramo, createDaoProfileVc, createPunkProfileVc, createKudosVc, getAllDids, getAllVcs } from '../veramo/did-manager';
+import {
+  initVeramo,
+  createDaoProfileVc,
+  createPunkProfileVc,
+  createKudosVc,
+  getAllDids,
+  getAllVcs,
+  createSecondedKudosVc
+} from '../veramo/did-manager';
 import { IIdentifier } from "@veramo/core";
 import { UniqueVerifiableCredential } from "@veramo/data-store";
 
@@ -31,22 +39,28 @@ const main = async () => {
     discordId: 'punkDiscordId13',
     avatarUrl: 'https://cdn.discordapp.com/avatars/510490140758507546/f6af831ef51852741a2f430749dfb3bf.png?size=64',
   });
-  await createKudosVc(dao1Punk1, dao1Punk2, daoName1, {
-    description: 'You\'re awesome becase you did great on the thing! 👏👏👏',
-    message: 'Message',
+  const vc1 = await createKudosVc(dao1Punk1, dao1Punk2, daoName1, {
+    message: 'You\'re awesome!',
+    description: 'Because you did great on the thing! 👏👏👏',
   });
-  await createKudosVc(dao1Punk2, dao1Punk1, daoName1, {
-    description: 'You\'re great cuz you gave me kudos earlier! 🎉🎉',
-    message: 'Message',
+  const vc2 = await createKudosVc(dao1Punk2, dao1Punk1, daoName1, {
+    message: 'You\'re great!',
+    description: 'Cuz you gave me kudos earlier! 🎉🎉',
   });
   await createKudosVc(dao1Punk1, dao1Punk3, daoName1, {
-    description: 'I didn\'t get kudos from you but we\'re still friends right 😟',
-    message: 'Message',
+    message: 'You\'ve been killing it lately!',
+    description: 'Awesome work on XYZ',
   });
   await createKudosVc(dao1Punk2, dao1Punk3, daoName1, {
-    description: 'I\'m feeling left out you guise 😠',
-    message: 'Message',
-  })
+    message: 'Thanks for helping with the hackathon',
+    description: 'Couldn\'t have done it without you!',
+  });
+  await createSecondedKudosVc(dao1Punk3,
+    vc1.credentialSubject.credentialId,
+  );
+  await createSecondedKudosVc(dao1Punk3,
+    vc2.credentialSubject.credentialId,
+  );
 
   // TODO: add good looking data to test UI with
 

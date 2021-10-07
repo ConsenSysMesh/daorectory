@@ -24,15 +24,15 @@ export declare type PunkProfileVcSubject = {
 };
 
 export declare type KudosVcSubject = {
-  credentialId?: string, // unique ID we generate for this VC
   message: string,
   description: string,
+  credentialId?: string, // unique ID we generate for this VC
   daoId?: string, // for ease of relating VCs received within a specific DAO
 };
 
 export declare type SecondedKudosVcSubject = {
-  credentialId?: string,  // unique ID we generate for this VC
-  message?: string, // optional msg to go with +1 sentiment
   originalKudosId: string, // reference to credentialId of the original kudos
+  credentialId?: string,  // unique ID we generate for this VC
   daoId?: string, // for ease of relating VCs received within a specific DAO
+  message?: string, // optional msg to go with +1 sentiment
 };
