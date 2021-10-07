@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "daemon:build-dev": "tsc --watch --project tsconfig.build.json",
-    "daemon:run": "yarn run nodemon --inspect ./dist/index.js --watch dist/*",
+    "daemon:run": "yarn run nodemon --inspect ./dist/index.js --watch dist/",
     "daemon:debug": "yarn run nodemon --inspect ./dist/index.js",
     "daemon:debug-break": "yarn run nodemon --inspect-brk=localhost:9222 ./dist/index.js",
     "daemon:deploy-commands": "yarn node ./dist/scripts/deploy-commands.js",

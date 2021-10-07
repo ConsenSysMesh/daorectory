@@ -23,6 +23,7 @@ export declare type PunkProfileVcSubject = {
 };
 
 export declare type KudoVcSubject = {
+  message: string,
   description: string,
   daoId?: string, // for ease of relating VCs received within a specific DAO
 };

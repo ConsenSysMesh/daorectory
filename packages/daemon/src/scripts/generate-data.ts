@@ -33,15 +33,19 @@ const main = async () => {
   });
   await createKudosVc(dao1Punk1, dao1Punk2, daoName1, {
     description: 'You\'re awesome becase you did great on the thing! 👏👏👏',
+    message: 'Message',
   });
   await createKudosVc(dao1Punk2, dao1Punk1, daoName1, {
     description: 'You\'re great cuz you gave me kudos earlier! 🎉🎉',
+    message: 'Message',
   });
   await createKudosVc(dao1Punk1, dao1Punk3, daoName1, {
-    description: 'I didn\'t get kudos from you but we\'re still friends right 😟'
+    description: 'I didn\'t get kudos from you but we\'re still friends right 😟',
+    message: 'Message',
   });
   await createKudosVc(dao1Punk2, dao1Punk3, daoName1, {
-    description: 'I\'m feeling left out you guise 😠'
+    description: 'I\'m feeling left out you guise 😠',
+    message: 'Message',
   })
 
   // TODO: add good looking data to test UI with
