@@ -108,6 +108,8 @@ export const findOrCreatePunk = async (name:string) => findOrCreateDid(_punkAlia
  */
 export const createDaoProfileVc = async (forDao:string, profile:DaoProfileVcSubject) => {
   const forDid = await findOrCreateDao(forDao);
+  const didVcs = await findVcsForDao(forDao, VcTypes.DaoProfile);
+  if (didVcs.length > 0) return didVcs[0];
   const verifiableCredential = await _createVc(
     forDid,
     daemonDid,
@@ -119,11 +121,13 @@ export const createDaoProfileVc = async (forDao:string, profile:DaoProfileVcSubj
 
 /**
  * Creates the profile VC for a Punk. Will create the Punk DID if one does not already exist.
- * @param forDao
+ * @param forPunk
  * @param profile
  */
 export const createPunkProfileVc = async (forPunk:string, profile:PunkProfileVcSubject) => {
   const forDid = await findOrCreatePunk(forPunk);
+  const didVcs = await findVcsForPunk(forPunk, VcTypes.PunkProfile);
+  if (didVcs.length > 0) return didVcs[0];
   const verifiableCredential = await _createVc(
     forDid,
     daemonDid,

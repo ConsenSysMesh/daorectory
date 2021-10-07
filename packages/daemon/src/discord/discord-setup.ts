@@ -1,5 +1,5 @@
 import discordClient from './discord-client';
-import { createDaoDid } from '../veramo/did-manager';
+import { createDaoDid, createDaoProfileVc } from '../veramo/did-manager';
 
 console.log('Starting Daemon Discord bot...');
 
@@ -8,8 +8,14 @@ discordClient.on('ready', async () => {
 
   await Promise.all(discordClient.guilds.cache.map(async (guild) => {
     console.log(`Getting or creating DID for ${guild.name}/${guild.id}`);
-    await createDaoDid(guild.id);
+    const vc = await createDaoProfileVc(guild.id, {
+      name: guild.name,
+      discordId: guild.id,
+      avatarUrl: guild.icon,
+    });
+    console.log(vc);
   }));
+  console.log('Finished creating DIDs/VCs for all guilds');
 });
 
 discordClient.on('interactionCreate', async (interaction) => {
