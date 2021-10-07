@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { createVeramoAgent, SERVICE_DID_ALIAS, DID_PROVIDER, KMS } from './index';
 import {IDataStore, IDIDManager, IIdentifier, IKeyManager, IResolver, TAgent} from "@veramo/core";
 import {IDataStoreORM} from "@veramo/data-store";
@@ -6,9 +7,10 @@ import { Connection } from "typeorm";
 import {
   VeramoAgentConfigOverrides,
   VcTypes,
-  KudoVcSubject,
+  KudosVcSubject,
   DaoProfileVcSubject,
-  PunkProfileVcSubject
+  PunkProfileVcSubject,
+  SecondedKudosVcSubject,
 } from "./veramo-types";
 import fs from "fs";
 
@@ -144,7 +146,7 @@ export const createPunkProfileVc = async (forPunk:string, profile:PunkProfileVcS
  * @param daoName Name of the DAO discord server were the activity took plage
  * @param kudos
  */
-export const createKudosVc = async (forPunk:string, fromPunk:string, daoName:string, kudos:KudoVcSubject) => {
+export const createKudosVc = async (forPunk:string, fromPunk:string, daoName:string, kudos:KudosVcSubject) => {
   const forDid = await findOrCreatePunk(forPunk);
   const fromDid = await findOrCreatePunk(fromPunk);
   const daoDid = await findDaoDid(daoName);
@@ -154,6 +156,23 @@ export const createKudosVc = async (forPunk:string, fromPunk:string, daoName:str
     VcTypes.Kudos,
     // resolving the DAO's did here based on its name
     {...kudos, daoId: daoDid.did });
+  return verifiableCredential;
+};
+
+export const createSecondedKudosVc = async (forPunk:string, fromPunk:string, daoName:string, secondKudos:SecondedKudosVcSubject) => {
+  const forDid = await findOrCreatePunk(forPunk);
+  const fromDid = await findOrCreatePunk(fromPunk);
+  const daoDid = await findDaoDid(daoName);
+  const verifiableCredential = await _createVc(
+    forDid,
+    fromDid,
+    VcTypes.SecondedKudos,
+    // resolving the DAO's did here based on its name
+    {
+      ...secondKudos,
+      credentialId: uuidv4(),
+      daoId: daoDid.did,
+    });
   return verifiableCredential;
 };
 

@@ -2896,6 +2896,7 @@ __metadata:
     "@discordjs/builders": ^0.6.0
     "@discordjs/rest": ^0.1.0-canary.0
     "@types/node": ^16.9.6
+    "@types/uuid": ^8.3.1
     "@veramo/core": ^3.0.0
     "@veramo/credential-w3c": ^3.0.0
     "@veramo/data-store": ^3.0.0
@@ -2916,6 +2917,7 @@ __metadata:
     sqlite3: ^5.0.2
     typeorm: ^0.2.37
     typescript: ^4.4.3
+    uuid: ^8.3.2
     web-did-resolver: ^2.0.4
   languageName: unknown
   linkType: soft
@@ -3772,6 +3774,13 @@ __metadata:
   dependencies:
     source-map: ^0.6.1
   checksum: def36fd2c698a33d8f67f5e21aab926eb9bda2d7951eab544941e1feb1231f020ff1c210d840dcc0fc9f07b5d22ef8b566887ddec9753b8b9f7223cceaa70993
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^8.3.1":
+  version: 8.3.1
+  resolution: "@types/uuid@npm:8.3.1"
+  checksum: b41bdc5e86c6f0f1899306be10455636da0f2168c9489b869edd6837ddeb7c0e501b1ff7d857402462986bada2a379125743dd895fa801d03437cd632116a373
   languageName: node
   linkType: hard
 
@@ -18466,7 +18475,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"uuid@npm:^8.3.0":
+"uuid@npm:^8.3.0, uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:
