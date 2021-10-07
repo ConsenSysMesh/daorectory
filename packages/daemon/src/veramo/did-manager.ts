@@ -159,16 +159,16 @@ export const createKudosVc = async (forPunk:string, fromPunk:string, daoName:str
   return verifiableCredential;
 };
 
-export const createSecondedKudosVc = async (forPunk:string, originalKudosVcId: string) => {
+export const createSecondedKudosVc = async (fromPunk:string, originalKudosVcId: string) => {
   const originalVc = await findVcByCredentialId(originalKudosVcId);
   if (!originalVc || !originalVc.verifiableCredential.type.includes(VcTypes.Kudos)) {
     throw new Error('Could not find a Kudos VC with that credentialId');
   }
   const { credentialSubject } = originalVc.verifiableCredential;
-  const forDid = await findOrCreatePunk(forPunk);
+  const fromDid = await findOrCreatePunk(fromPunk);
   const verifiableCredential = await _createVc(
-    forDid.did,
     credentialSubject.id,
+    fromDid.did,
     VcTypes.SecondedKudos,
     // Copying daoId from the original Kudos
     {

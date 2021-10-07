@@ -240,6 +240,7 @@ describe('did-manager', () => {
 
   it('should be able to create a SecondedKudos VC for non-existent punks and then find it by recipient did', async () => {
     const daoDid = await createDaoDid('vcDao5');
+    const forDid = await createPunkDid('receiverPunk5');
     const kudos = await createKudosVc(
       'receiverPunk5',
       'giverPunk5',
@@ -248,18 +249,18 @@ describe('did-manager', () => {
         message: 'You did great!5',
         description: 'Regarding the thing5',
       });
+    const fromDid = await createPunkDid('seconderPunk');
     const secondKudos = await createSecondedKudosVc(
-      'giverPunk6',
+      'seconderPunk',
       kudos.credentialSubject.credentialId);
 
-    // console.log('Created VC', kudos);
     const savedVcs = await findVcsForDid(secondKudos.credentialSubject.id, VcTypes.SecondedKudos);
     expect(savedVcs).toHaveLength(1);
     // console.log('Queried VC', savedVcs[0]);
     const { verifiableCredential } = savedVcs[0];
     const { credentialSubject } = verifiableCredential;
-    expect(verifiableCredential.issuer.id).not.toBeNil();
-    expect(credentialSubject.id).not.toBeNil();
+    expect(verifiableCredential.issuer.id).toEqual(fromDid.did);
+    expect(credentialSubject.id).toEqual(forDid.did);
     expect(credentialSubject.credentialId).not.toBeNil();
     expect(credentialSubject.daoId).toEqual(daoDid.did);
     expect(credentialSubject.originalKudosId).toEqual(kudos.credentialSubject.credentialId);
