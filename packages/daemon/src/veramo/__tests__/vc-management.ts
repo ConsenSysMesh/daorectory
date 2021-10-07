@@ -181,7 +181,6 @@ describe('did-manager', () => {
       'giverPunk5',
       'vcDao4',
       {
-        message: '+1 to da thing',
         originalKudosId: kudos.credentialSubject.credentialId,
       });
     // console.log('Created VC', kudos);
@@ -194,6 +193,5 @@ describe('did-manager', () => {
     expect(credentialSubject.id).not.toBeNil();
     expect(credentialSubject.daoId).toEqual(daoDid.did);
     expect(credentialSubject.originalKudosId).toEqual(kudos.credentialSubject.credentialId);
-    expect(credentialSubject.message).toEqual('+1 to da thing');
   });
 });
