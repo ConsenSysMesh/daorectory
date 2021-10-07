@@ -3,7 +3,13 @@ import {IDataStore, IDIDManager, IIdentifier, IKeyManager, IResolver, TAgent} fr
 import {IDataStoreORM} from "@veramo/data-store";
 import { ICredentialIssuer } from '@veramo/credential-w3c'
 import { Connection } from "typeorm";
-import {VeramoAgentConfigOverrides, VcTypes, KudoVcSubject} from "./veramo-types";
+import {
+  VeramoAgentConfigOverrides,
+  VcTypes,
+  KudoVcSubject,
+  DaoProfileVcSubject,
+  PunkProfileVcSubject
+} from "./veramo-types";
 import fs from "fs";
 
 // requires calling initVeramo to create this local singleton agent and dbConnection
@@ -51,10 +57,16 @@ export const getAllDids = async () => agent.didManagerFind({ provider: DID_PROVI
 
 export const getAllVcs = async () => agent.dataStoreORMGetVerifiableCredentials({});
 
-const _daoAlias = (name:string) => name.startsWith('dao_') ? name : `dao_${name}`;
+const _daoAlias = (name:string) => {
+  const lowercaseName = name.toLowerCase();
+  return lowercaseName.startsWith('dao_') ? lowercaseName : `dao_${lowercaseName}`;
+};
 export const createDaoDid = async (name:string) => findOrCreateDid(_daoAlias(name));
 
-const _punkAlias = (name:string) => name.startsWith('punk_') ? name : `punk_${name}`;
+const _punkAlias = (name:string) => {
+  const lowercaseName = name.toLowerCase();
+  return lowercaseName.startsWith('punk_') ? lowercaseName : `punk_${lowercaseName}`;
+};
 export const createPunkDid = async (name:string) => findOrCreateDid(_punkAlias(name));
 
 export const findOrCreateDid = async (alias:string) =>
@@ -89,6 +101,45 @@ export const findPunkDid = async (name:string) => findDidByAlias(_punkAlias(name
 export const findOrCreateDao = async (name:string) => findOrCreateDid(_daoAlias(name));
 export const findOrCreatePunk = async (name:string) => findOrCreateDid(_punkAlias(name));
 
+/**
+ * Creates the profile VC for a DAO. Will create the DAO DID if one does not already exist.
+ * @param forDao
+ * @param profile
+ */
+export const createDaoProfileVc = async (forDao:string, profile:DaoProfileVcSubject) => {
+  const forDid = await findOrCreateDao(forDao);
+  const verifiableCredential = await _createVc(
+    forDid,
+    daemonDid,
+    VcTypes.DaoProfile,
+    // resolving the DAO's did here based on its name
+    profile);
+  return verifiableCredential;
+};
+
+/**
+ * Creates the profile VC for a Punk. Will create the Punk DID if one does not already exist.
+ * @param forDao
+ * @param profile
+ */
+export const createPunkProfileVc = async (forPunk:string, profile:PunkProfileVcSubject) => {
+  const forDid = await findOrCreatePunk(forPunk);
+  const verifiableCredential = await _createVc(
+    forDid,
+    daemonDid,
+    VcTypes.PunkProfile,
+    // resolving the DAO's did here based on its name
+    profile);
+  return verifiableCredential;
+};
+
+/**
+ * Creates a Kudos VC from one punk to another punk DID alias
+ * @param forPunk
+ * @param fromPunk
+ * @param daoName Name of the DAO discord server were the activity took plage
+ * @param kudos
+ */
 export const createKudosVc = async (forPunk:string, fromPunk:string, daoName:string, kudos:KudoVcSubject) => {
   const forDid = await findOrCreatePunk(forPunk);
   const fromDid = await findOrCreatePunk(fromPunk);
@@ -102,7 +153,7 @@ export const createKudosVc = async (forPunk:string, fromPunk:string, daoName:str
   return verifiableCredential;
 };
 
-const _createVc = async (forDid:IIdentifier, fromDid:IIdentifier, credentialType:string, credential:KudoVcSubject) => {
+const _createVc = async (forDid:IIdentifier, fromDid:IIdentifier, credentialType:string, credential:object) => {
   // TODO: define some VC schemas
  return agent.createVerifiableCredential({
     credential: {
@@ -120,6 +171,16 @@ const _createVc = async (forDid:IIdentifier, fromDid:IIdentifier, credentialType
   });
 }
 
+export const findVcsForDao = async (dao: string, vcType: string = VcTypes.Kudos) => {
+  const recipientDid = await findDidByAlias(_daoAlias(dao));
+  return agent.dataStoreORMGetVerifiableCredentials({
+    where: [
+      { column: 'subject', value: [recipientDid.did] },
+      { column: 'type', value: [`VerifiableCredential,${vcType}`] },
+    ]
+  })
+};
+
 export const findVcsForPunk = async (punk: string, vcType: string = VcTypes.Kudos) => {
   const recipientDid = await findDidByAlias(_punkAlias(punk));
   return agent.dataStoreORMGetVerifiableCredentials({
@@ -136,4 +197,4 @@ export const findVcsForDid = async (did: string, vcType: string = VcTypes.Kudos)
       { column: 'subject', value: [did] },
       { column: 'type', value: [`VerifiableCredential,${vcType}`] },
     ]
-  })
+  });

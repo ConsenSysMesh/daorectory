@@ -5,10 +5,9 @@ import {
   _clearVeramo,
   findDaemonDid,
   createPunkDid,
-  findDidByAlias,
   createKudosVc,
   findVcsForPunk,
-  findPunkDid, createDaoDid, findDaoDid, findVcsForDid
+  findPunkDid, createDaoDid, findDaoDid, findVcsForDid, createDaoProfileVc, findVcsForDao, createPunkProfileVc
 } from '../did-manager';
 import {VcTypes} from "../veramo-types";
 
@@ -30,15 +29,57 @@ describe('did-manager', () => {
   });
 
   it('should be able to create a new punk DID and find it', async () => {
-    const newDid = await createPunkDid('fooPunk');
+    await createPunkDid('fooPunk');
     const savedDid = await findPunkDid('fooPunk');
     expect(savedDid).not.toBeNil();
   });
 
   it('should be able to create a new DAO DID and find it', async () => {
-    const newDid = await createDaoDid('fooDao');
+    await createDaoDid('fooDao');
     const savedDid = await findDaoDid('fooDao');
     expect(savedDid).not.toBeNil();
+  });
+
+  it('should be able to create a DaoProfile VC and find it', async () => {
+    const vc = await createDaoProfileVc(
+      'fooDao2',
+      {
+        name: 'Foo Dao Two',
+        discordId: 'discord2',
+        avatarUrl: 'something something',
+      });
+    const savedVcs = await findVcsForDao('fooDao2', VcTypes.DaoProfile);
+    expect(savedVcs).toHaveLength(1);
+    // console.log('Queried VC', savedVcs[0]);
+    const { verifiableCredential } = savedVcs[0];
+    const { credentialSubject } = verifiableCredential;
+    const daemonDid = await findDaemonDid();
+    expect(verifiableCredential.issuer.id).toEqual(daemonDid.did);
+    expect(credentialSubject.id).toEqual(vc.credentialSubject.id);
+    expect(credentialSubject.name).toEqual('Foo Dao Two');
+    expect(credentialSubject.discordId).toEqual('discord2');
+    expect(credentialSubject.avatarUrl).toEqual('something something');
+  });
+
+  it('should be able to create a PunkProfile VC and find it', async () => {
+    const vc = await createPunkProfileVc(
+      'fooPunk2',
+      {
+        name: 'Foo Punk Two',
+        discordId: 'discord3',
+        avatarUrl: 'something something else',
+      });
+    const savedVcs = await findVcsForPunk('fooPunk2', VcTypes.PunkProfile);
+    expect(savedVcs).toHaveLength(1);
+    // console.log('Queried VC', savedVcs[0]);
+    const { verifiableCredential } = savedVcs[0];
+    const { credentialSubject } = verifiableCredential;
+    const daemonDid = await findDaemonDid();
+    expect(verifiableCredential.issuer.id).toEqual(daemonDid.did);
+    expect(credentialSubject.id).toEqual(vc.credentialSubject.id);
+    expect(credentialSubject.name).toEqual('Foo Punk Two');
+    expect(credentialSubject.discordId).toEqual('discord3');
+    expect(credentialSubject.avatarUrl).toEqual('something something else');
   });
 
   it('should be able to write a VC for existing punks and then find it by recipient name', async () => {

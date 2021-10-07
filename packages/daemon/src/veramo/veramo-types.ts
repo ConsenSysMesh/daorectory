@@ -5,7 +5,21 @@ export declare type VeramoAgentConfigOverrides = {
 };
 
 export enum VcTypes {
+  DaoProfile = 'daoProfile',
+  PunkProfile = 'punkProfile',
   Kudos = 'kudos',
+}
+
+export declare type DaoProfileVcSubject = {
+  name: string,
+  discordId: string,
+  avatarUrl: string,
+};
+
+export declare type PunkProfileVcSubject = {
+  name: string,
+  discordId: string,
+  avatarUrl: string,
 };
 
 export declare type KudoVcSubject = {
