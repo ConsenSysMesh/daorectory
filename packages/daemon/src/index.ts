@@ -1,20 +1,12 @@
 import './env';
-import discordClient from './discord/discord-client';
-import {initVeramo, getAllDids, getAllVcs} from './veramo/did-manager';
+import { initVeramo, getAllDids, getAllVcs, createDaoDid } from './veramo/did-manager';
 import { IIdentifier } from "@veramo/core";
 import { UniqueVerifiableCredential } from "@veramo/data-store";
 import './api';
+import './discord/discord-setup';
 
 console.log('Starting Daemon...');
 
-discordClient.on('interactionCreate', async (interaction) => {
-  if (interaction.isCommand()) {
-    await interaction.reply({
-      content: 'You have commanded me',
-      ephemeral: true,
-    });
-  }
-});
 
 const main = async () => {
   await initVeramo(); // creates Daemon service DID if none exists
