@@ -1,13 +1,13 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { Layout} from "antd";
 import classNames from "classnames";
 
 const { Content: AntdContent } = Layout;
 
-type ContentProps = {
+type Props = {
   className: string,
 }
 
-const Content: FunctionComponent<ContentProps> = ({ className, ...otherProps }) =>
+const Content: FC<Props> = ({ className, ...otherProps }) =>
   <AntdContent className={classNames('Content', className)} {...otherProps} />;
 export default Content;

@@ -4,6 +4,7 @@ import Spacer from "../components/Spacer";
 import { NavLink, useLocation } from "react-router-dom";
 import { Pages } from "../config/constants";
 import { Routes } from "../routes/Router";
+import { SearchOutlined } from '@ant-design/icons';
 
 const { Header: AntdHeader } = Layout;
 
@@ -13,7 +14,9 @@ const Header = () => {
 
   return (
     <AntdHeader className="Header">
-      <div className="logo" />
+      <a href="https://sobol.io/" target="_blank"  rel="noreferrer">
+        <img alt="Sobol" src="/logo-dark.png" className="Header--logo" />
+      </a>
       <Menu theme="dark" mode="horizontal" selectedKeys={[pathname]}>
         <Menu.Item key={Routes.Daos}>
           <NavLink to={Routes.Daos}>DAO Directory</NavLink>
@@ -26,11 +29,13 @@ const Header = () => {
         </Menu.Item>
       </Menu>
       <Spacer />
-      <Input placeholder="Search..." className="Header--input" />
+      <Input placeholder="Search..." className="Header--input" prefix={<SearchOutlined />}  />
       <Menu theme="dark" mode="horizontal" selectedKeys={[pathname]}>
         <Menu.Item key={myProfileRoute} style={{ width: 150 }}>
           <NavLink to={myProfileRoute}>
-            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" /> My Profile
+            <Avatar
+              src="https://lh3.googleusercontent.com/GD12XpZ4TUHe3tgStlzewrwm27j40AVdv8vvZbCmWfTFzLBHvIsGSVfNYSz0_kKWVg3aDNQAbF2pTuLEFWUus2EZrA7eLiZYAB_kAA=s0"
+            /> My Profile
           </NavLink>
         </Menu.Item>
       </Menu>

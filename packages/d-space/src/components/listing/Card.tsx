@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 
-type CardProps = {}
+type Props = {}
 
-const Card: FunctionComponent<CardProps> = () => (
+const Card: FC<Props> = () => (
   <div className="Card">
     Hello world
   </div>

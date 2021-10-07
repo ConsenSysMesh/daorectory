@@ -1,10 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { Space } from 'antd';
 import Card from "./Card";
 
-type ListingProps = {}
+type Props = {}
 
-const ListingContainer: FunctionComponent<ListingProps> = () => (
+const ListingContainer: FC<Props> = () => (
   <Space size={[16, 16]} wrap className="ListingContainer">
     <Card />
     <Card />
