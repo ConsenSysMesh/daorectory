@@ -51,10 +51,10 @@ export const getAllDids = async () => agent.didManagerFind({ provider: DID_PROVI
 
 export const getAllVcs = async () => agent.dataStoreORMGetVerifiableCredentials({});
 
-const _daoAlias = (name:string) => `dao_${name}`;
+const _daoAlias = (name:string) => name.startsWith('dao_') ? name : `dao_${name}`;
 export const createDaoDid = async (name:string) => findOrCreateDid(_daoAlias(name));
 
-const _punkAlias = (name:string) => `punk_${name}`;
+const _punkAlias = (name:string) => name.startsWith('punk_') ? name : `punk_${name}`;
 export const createPunkDid = async (name:string) => findOrCreateDid(_punkAlias(name));
 
 export const findOrCreateDid = async (alias:string) =>
@@ -89,14 +89,16 @@ export const findPunkDid = async (name:string) => findDidByAlias(_punkAlias(name
 export const findOrCreateDao = async (name:string) => findOrCreateDid(_daoAlias(name));
 export const findOrCreatePunk = async (name:string) => findOrCreateDid(_punkAlias(name));
 
-export const createKudosVc = async (forPunk:string, fromPunk:string, kudos:KudoVcSubject) => {
+export const createKudosVc = async (forPunk:string, fromPunk:string, daoName:string, kudos:KudoVcSubject) => {
   const forDid = await findOrCreatePunk(forPunk);
   const fromDid = await findOrCreatePunk(fromPunk);
+  const daoDid = await findDaoDid(daoName);
   const verifiableCredential = await _createVc(
     forDid,
     fromDid,
     VcTypes.Kudos,
-    kudos);
+    // resolving the DAO's did here based on its name
+    {...kudos, daoId: daoDid.did });
   return verifiableCredential;
 };
 
@@ -127,3 +129,11 @@ export const findVcsForPunk = async (punk: string, vcType: string = VcTypes.Kudo
     ]
   })
 };
+
+export const findVcsForDid = async (did: string, vcType: string = VcTypes.Kudos) =>
+  agent.dataStoreORMGetVerifiableCredentials({
+    where: [
+      { column: 'subject', value: [did] },
+      // { column: 'type', value: ['VerifiableCredential', vcType] },
+    ]
+  })

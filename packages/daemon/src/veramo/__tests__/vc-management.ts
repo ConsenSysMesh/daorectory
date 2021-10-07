@@ -8,7 +8,7 @@ import {
   findDidByAlias,
   createKudosVc,
   findVcsForPunk,
-  findPunkDid, createDaoDid, findDaoDid
+  findPunkDid, createDaoDid, findDaoDid, findVcsForDid
 } from '../did-manager';
 import {VcTypes} from "../veramo-types";
 
@@ -42,14 +42,17 @@ describe('did-manager', () => {
   });
 
   it('should be able to write a VC for existing punks and then find it by recipient name', async () => {
+    const daoDid = await createDaoDid('vcDao');
     const forDid = await createPunkDid('receiverPunk');
     const fromDid = await createPunkDid('giverPunk');
     await createKudosVc(
       'receiverPunk',
       'giverPunk',
+      'vcDao',
       {
         description: 'You did great on the thing',
         createdBy: 'giverPunk',
+        discordServer: 'vcDao',
       });
     // console.log('Created VC', vc);
     const savedVcs = await findVcsForPunk('receiverPunk', VcTypes.Kudos);
@@ -59,16 +62,20 @@ describe('did-manager', () => {
     const { credentialSubject } = verifiableCredential;
     expect(verifiableCredential.issuer.id).toEqual(fromDid.did);
     expect(credentialSubject.id).toEqual(forDid.did);
+    expect(credentialSubject.daoId).toEqual(daoDid.did);
     expect(credentialSubject.description).toEqual('You did great on the thing');
   });
 
   it('should be able to write a VC for non-existent punks and then find it by recipient name', async () => {
+    const daoDid = await createDaoDid('vcDao2');
     await createKudosVc(
       'receiverPunk2',
       'giverPunk2',
+      'vcDao2',
       {
         description: 'You did great on the thing2',
         createdBy: 'giverPunk2',
+        discordServer: 'vcDao2',
       });
     // console.log('Created VC', vc);
     const savedVcs = await findVcsForPunk('receiverPunk2', VcTypes.Kudos);
@@ -78,6 +85,30 @@ describe('did-manager', () => {
     const { credentialSubject } = verifiableCredential;
     expect(verifiableCredential.issuer.id).not.toBeNil();
     expect(credentialSubject.id).not.toBeNil();
+    expect(credentialSubject.daoId).toEqual(daoDid.did);
     expect(credentialSubject.description).toEqual('You did great on the thing2');
+  });
+
+  it('should be able to write a VC for non-existent punks and then find it by recipient did', async () => {
+    const daoDid = await createDaoDid('vcDao3');
+   const vc = await createKudosVc(
+      'receiverPunk3',
+      'giverPunk3',
+     'vcDao3',
+      {
+        description: 'You did great on the thing3',
+        createdBy: 'giverPunk3',
+        discordServer: 'vcDao3',
+      });
+    // console.log('Created VC', vc);
+    const savedVcs = await findVcsForDid(vc.credentialSubject.id, VcTypes.Kudos);
+    expect(savedVcs).toHaveLength(1);
+    // console.log('Queried VC', savedVcs[0]);
+    const { verifiableCredential } = savedVcs[0];
+    const { credentialSubject } = verifiableCredential;
+    expect(verifiableCredential.issuer.id).not.toBeNil();
+    expect(credentialSubject.id).not.toBeNil();
+    expect(credentialSubject.daoId).toEqual(daoDid.did);
+    expect(credentialSubject.description).toEqual('You did great on the thing3');
   });
 });

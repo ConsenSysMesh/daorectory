@@ -10,5 +10,8 @@ export enum VcTypes {
 
 export declare type KudoVcSubject = {
   description: string,
-  createdBy: string, // discord id?
+  daoId?: string, // for ease of relating VCs received within a specific DAO
+  // TODO: do we need to cache these names here?
+  createdBy: string, // discord nickname of the giving user?
+  discordServer: string, // discord server name?
 };
