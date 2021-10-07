@@ -10,3 +10,7 @@ To get started:
 - run `yarn daemon:build-dev` in one terminal to rebuild code on file changes
 - run `yarn daemon:run` to run daemon process
 - Daemon API is running on port `8081` by default
+
+Getting some representative data generated:
+- `yarn daemon:generate-data`
+- If you ever want to start over with a clean slate: `yarn daemon:clear-data`

@@ -92,8 +92,6 @@ describe('did-manager', () => {
       'vcDao',
       {
         description: 'You did great on the thing',
-        createdBy: 'giverPunk',
-        discordServer: 'vcDao',
       });
     // console.log('Created VC', vc);
     const savedVcs = await findVcsForPunk('receiverPunk', VcTypes.Kudos);
@@ -121,8 +119,6 @@ describe('did-manager', () => {
       'vcDao2',
       {
         description: 'You did great on the thing2',
-        createdBy: 'giverPunk2',
-        discordServer: 'vcDao2',
       });
     // console.log('Created VC', vc);
     const savedVcs = await findVcsForPunk('receiverPunk2', VcTypes.Kudos);
@@ -144,8 +140,6 @@ describe('did-manager', () => {
      'vcDao3',
       {
         description: 'You did great on the thing3',
-        createdBy: 'giverPunk3',
-        discordServer: 'vcDao3',
       });
     // console.log('Created VC', vc);
     const savedVcs = await findVcsForDid(vc.credentialSubject.id, VcTypes.Kudos);
