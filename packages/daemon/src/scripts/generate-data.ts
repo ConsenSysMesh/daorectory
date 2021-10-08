@@ -24,18 +24,21 @@ const main = async () => {
   const dao1Punk1 = 'coolDude#1234';
   await createPunkProfileVc(dao1Punk1, {
     name: dao1Punk1,
+    handle: dao1Punk1,
     discordId: 'punkDiscordId11',
     avatarUrl: 'https://cdn.discordapp.com/avatars/149991825703305217/8e4ec2c92c4fbe31201631ebc81c6289.png?size=64',
   });
   const dao1Punk2 = 'radMan#2345';
   await createPunkProfileVc(dao1Punk2, {
     name: dao1Punk2,
+    handle: dao1Punk2,
     discordId: 'punkDiscordId12',
     avatarUrl: 'https://cdn.discordapp.com/avatars/510489920968589318/9f2fc3dad2d3a2f018b34f593f77cf9e.png?size=64',
   });
   const dao1Punk3 = 'intenseIndividual#3456';
   await createPunkProfileVc(dao1Punk3, {
     name: dao1Punk3,
+    handle: dao1Punk3,
     discordId: 'punkDiscordId13',
     avatarUrl: 'https://cdn.discordapp.com/avatars/510490140758507546/f6af831ef51852741a2f430749dfb3bf.png?size=64',
   });
