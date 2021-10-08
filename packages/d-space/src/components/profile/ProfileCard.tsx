@@ -11,15 +11,17 @@ const ProfileCard: FC<Props> = ({ title = 'Funk Punk' }) => {
     <div className="ProfileCard--button">View Details</div>
   );
 
+  const dot = <span className="ProfileCard--dot">•</span>;
+
   return (
     <Card
-      title={(<><ProfileLink title={title} size="large" /> * DID</>)}
+      title={(<><ProfileLink title={title} size="large" /> {dot} DID</>)}
       actions={[cardButtons]}
       className="ProfileCard"
     >
       <p>Nullam placerat ex eu orci euismod, a vulputate risus ornare. Nulla sed finibus odio. Donec elementum nulla quam, non aliquet odio efficitur ut.</p>
       <div className="ProfileCard--info">
-        <ProfileLink title="Funk Punk" size="small" /> * #media-station * DID * Seconders (2)
+        <ProfileLink title="Funk Punk" size="small" /> {dot} #media-station {dot} DID {dot} Seconders (2)
       </div>
     </Card>
   );

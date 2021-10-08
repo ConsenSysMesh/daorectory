@@ -6,24 +6,50 @@
   &--info {
     display: flex;
     align-items: center;
-    //justify-content: center;
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  &--dot {
+    color: rgba(247, 247, 248, 0.5);
+    margin-left: 4px;
+    margin-right: 4px;
   }
 
   &--button {
     color: rgba(118, 132, 231, 1);
+    background: linear-gradient(rgba(118, 132, 231, 1), rgba(162, 98, 231, 1));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   // antd overrides
   .ant-card-actions {
     background: transparent !important;
+
+    // TBD: hover state needed
+   border-image: -webkit-gradient(linear, left top, left bottom, from(rgba(118, 132, 231, 0.25)), to(rgba(162, 98, 231, 0.25)), color-stop(0.5, rgba(162, 98, 231, 0.25)), color-stop(0.5, rgba(118, 132, 231, 0.25))) 21 30 30 21 repeat repeat;
   }
 
   .ant-card-body {
-    padding: 24px 24px 16px 24px;
+    padding: 16px;
+    font-weight: bold;
+    font-size: 16px;
+
+    p {
+      margin-left: 4px;
+    }
   }
 
   .ant-card-head {
     border: none;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 14px;
+
+    .ProfileCard--dot {
+      margin-left: 0 !important;
+    }
   }
 
   .ant-card-head-title {

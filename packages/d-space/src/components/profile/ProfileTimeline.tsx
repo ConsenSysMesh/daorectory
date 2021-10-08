@@ -5,25 +5,24 @@ import ProfileCard from "./ProfileCard";
 
 const ProfileTimeline = () => {
   return (
-    <Timeline>
-      <Timeline.Item dot={<CalendarOutlined style={{ fontSize: '16px' }} />}>2021</Timeline.Item>
-      <Timeline.Item dot={<ClockCircleOutlined style={{ fontSize: '16px' }} />}>Sept 21</Timeline.Item>
-      <Timeline.Item>
+    <Timeline className="ProfileTimeline">
+      <Timeline.Item className="ProfileTimeline--year" dot={<CalendarOutlined />}>2021</Timeline.Item>
+      <Timeline.Item className="ProfileTimeline--month" dot={<ClockCircleOutlined />}>Sept 21</Timeline.Item>
+      <Timeline.Item className="ProfileTimeline--item">
         <ProfileCard title="Some title" />
       </Timeline.Item>
-      <Timeline.Item>
+      <Timeline.Item className="ProfileTimeline--item">
         <ProfileCard title="Some title" />
       </Timeline.Item>
-      <Timeline.Item>
+      <Timeline.Item className="ProfileTimeline--item">
         <ProfileCard title="Some title" />
       </Timeline.Item>
-      <Timeline.Item>
+      <Timeline.Item className="ProfileTimeline--item">
         <ProfileCard title="Some title" />
       </Timeline.Item>
-      <Timeline.Item>
+      <Timeline.Item className="ProfileTimeline--item">
         <ProfileCard title="Some title" />
       </Timeline.Item>
-      <Timeline.Item />
     </Timeline>
   );
 };
