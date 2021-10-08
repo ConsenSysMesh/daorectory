@@ -2895,6 +2895,7 @@ __metadata:
   dependencies:
     "@discordjs/builders": ^0.6.0
     "@discordjs/rest": ^0.1.0-canary.0
+    "@types/lodash": ^4.14.175
     "@types/node": ^16.9.6
     "@types/uuid": ^8.3.1
     "@veramo/core": ^3.0.0
@@ -2913,6 +2914,7 @@ __metadata:
     ethr-did-resolver: ^4.3.4
     express: ^4.17.1
     http: ^0.0.1-security
+    lodash: ^4.17.21
     nodemon: ^2.0.12
     sqlite3: ^5.0.2
     typeorm: ^0.2.37
@@ -3565,6 +3567,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: b5f8aa592cc21c16d99e69aec0976f12b893b055e4456d90148a610a6b6088e297b2ba5f38f8c8280cef006cfd8f9ec99e069905020882619dc5fc8aa46f5f27
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.175":
+  version: 4.14.175
+  resolution: "@types/lodash@npm:4.14.175"
+  checksum: 50721f33faa542f1b9f62f2ba769ed353c6036711e92bd89ce569f2ed247e38fb2a2899f6fd46466b1690fea7ae0239471e6a6093c54e8f2b0613e43e8eac19c
   languageName: node
   linkType: hard
 

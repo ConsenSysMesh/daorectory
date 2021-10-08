@@ -153,7 +153,7 @@ export const createPunkProfileVc = async (
   );
 };
 
-const vcIsKudos = (vc: VerifiableCredential): vc is KudosVc => vc.verifiableCredential.type.includes(VcTypes.Kudos);
+const vcIsKudos = (vc: VerifiableCredential): vc is KudosVc => vc.type.includes(VcTypes.Kudos);
 
 /**
  * Creates a Kudos VC from one punk to another punk DID alias
@@ -196,6 +196,7 @@ export const createSecondedKudosVc = async (fromPunk: string, originalKudosVcId:
     // Copying daoId from the original Kudos
     {
       originalKudosId: originalKudosVcId,
+      issuerId: fromPunk,
       daoId: credentialSubject.daoId,
     });
 };
@@ -204,7 +205,7 @@ async function _createVc<VcType extends VerifiableCredential>(
   forDid: string,
   fromDid: string,
   credentialType: string,
-  credential: Partial<VcType['credentialSubject']>,
+  credential: Omit<VcType['credentialSubject'], 'credentialId' | 'id'>,
 ): Promise<VcType> {
  const vc = await agent.createVerifiableCredential({
     credential: {
@@ -250,4 +251,14 @@ export const findVcByCredentialId = async (credentialId: string) => {
     ]
   });
   return results.length ? results[0] : null;
+}
+
+export const findSecondedKudos = async (kudosId: string) => {
+  const results = await agent.dataStoreORMGetVerifiableCredentialsByClaims({
+    where: [
+      { column: 'type', value: ['originalKudosId'] },
+      { column: 'value', value: [kudosId] },
+    ]
+  });
+  return results.map(uvc => uvc.verifiableCredential) as SecondedKudosVc[];
 }

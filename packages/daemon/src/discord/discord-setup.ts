@@ -3,10 +3,11 @@ import {
   createDaoDid,
   createDaoProfileVc,
   createKudosVc,
-  createPunkProfileVc,
+  createPunkProfileVc, createSecondedKudosVc, findSecondedKudos,
 } from '../veramo/did-manager';
 import { userMention } from '@discordjs/builders';
 import { Message, MessageEmbed } from 'discord.js';
+import _ from 'lodash';
 
 console.log('Starting Daemon Discord bot...');
 
@@ -87,19 +88,39 @@ discordClient.on('interactionCreate', async (interaction) => {
 
 discordClient.on('messageReactionAdd', async (messageReaction) => {
   if (messageReaction.partial) {
-    messageReaction = await messageReaction.fetch();
+    await messageReaction.fetch();
   }
+  console.log('messageReactionAdd', messageReaction);
 
-  if (!messageReaction.message.embeds?.length) return;
+  if (!messageReaction.message.embeds?.length) {
+    console.log('Missing embed');
+    return;
+  }
 
   const [embed] = messageReaction.message.embeds;
   const kudosIdField = embed.fields.find(f => f.name === 'KudosID');
-  if (!kudosIdField) return;
+  if (!kudosIdField) {
+    console.log('Missing kudos ID field');
+    return;
+  }
+  const kudosId = kudosIdField.value;
+
+  await messageReaction.users.fetch();
 
   const secondedUsers = [...messageReaction.users.cache.keys()].filter(id => id !== discordClient.user.id);
+  console.log(secondedUsers);
 
-  console.log('The following users have seconded:', secondedUsers);
-  // TODO: Create seconded VC
+  const secondedKudos = await findSecondedKudos(kudosId);
+  const secondedKudosByDiscordId = _.keyBy(secondedKudos, sk => sk.credentialSubject.issuerId);
+
+  await Promise.all(secondedUsers.map(async (userId) => {
+    if (secondedKudosByDiscordId[userId]) {
+      console.log(`${userId} has already seconded kudos ${kudosId}`);
+      return;
+    }
+    console.log(`Issuing seconded kudos from ${userId} for kudos ${kudosId}`);
+    await createSecondedKudosVc(userId, kudosId);
+  }))
 });
 
 discordClient.on('guildJoin', async (guild) => {
