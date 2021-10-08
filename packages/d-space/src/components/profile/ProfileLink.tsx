@@ -26,6 +26,7 @@ const ProfileLink: FC<Props> = ({
 
   const className = classNames('ProfileLink', {
     'ProfileLink--tile': isTile,
+    [`ProfileLink--${size}`]: size,
   });
 
   return (
