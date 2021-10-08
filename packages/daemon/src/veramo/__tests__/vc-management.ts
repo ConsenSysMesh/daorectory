@@ -98,6 +98,7 @@ describe('did-manager', () => {
       'fooPunk2',
       {
         name: 'Foo Punk Two',
+        handle: 'Foo Punk Two#4912',
         discordId: 'punkDiscord2',
         avatarUrl: 'punkAvatar2',
       });
@@ -120,6 +121,7 @@ describe('did-manager', () => {
       'fooPunk3',
       {
         name: 'Foo Punk Tree',
+        handle: 'Foo Punk Tree#2445',
         discordId: 'punkDiscord3',
         avatarUrl: 'punkAvatar3',
       });
@@ -127,6 +129,7 @@ describe('did-manager', () => {
       'fooPunk3', // same punk name ^
       {
         name: '123123asdasd23',
+        handle: '123123asdasd23#3213',
         discordId: '3345335',
         avatarUrl: 'gerehhghfg',
       });

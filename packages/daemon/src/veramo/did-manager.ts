@@ -18,7 +18,7 @@ import type {
   PunkProfileVc,
   SecondedKudosVc,
   VeramoAgentConfigOverrides,
-} from "@sobol/daemon-types/veramo-types";
+} from '@sobol/daemon-types/veramo-types';
 import fs from "fs";
 
 export enum VcTypes {

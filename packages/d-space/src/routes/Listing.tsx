@@ -12,10 +12,10 @@ const Listing: FunctionComponent<ListingProps> = ({ type }) => {
   const [objects, setObjects] = useState<DaoProfileVc[] | PunkProfileVc[]>([]);
   useEffect(() => {
     if (type === Objects.Dao) {
-      ApiClient.dids.getDaos()
+      ApiClient.Vcs.getDaos()
         .then(setObjects);
     } else {
-      ApiClient.dids.getPunks()
+      ApiClient.Vcs.getPunks()
         .then(setObjects);
     }
   }, [type]);
