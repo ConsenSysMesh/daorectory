@@ -24,7 +24,7 @@ const ProfileContainer: FC<Props> = () => (
       </div>
     </ProfileSection>
     <ProfileSection className="ProfileContainer--identities">
-      <ProfileLink title="FunkPunk#6201" />
+      <ProfileLink title="FunkPunk#6201" size="small" />
     </ProfileSection>
     <ProfileSection spaced>
       <h2>About Me</h2>

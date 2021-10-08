@@ -3,7 +3,32 @@
   border-radius: 12px !important;
   border: none !important;
 
+  &--info {
+    display: flex;
+    align-items: center;
+    //justify-content: center;
+  }
+
+  &--button {
+    color: rgba(118, 132, 231, 1);
+  }
+
+  // antd overrides
   .ant-card-actions {
     background: transparent !important;
+  }
+
+  .ant-card-body {
+    padding: 24px 24px 16px 24px;
+  }
+
+  .ant-card-head {
+    border: none;
+  }
+
+  .ant-card-head-title {
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
   }
 }
