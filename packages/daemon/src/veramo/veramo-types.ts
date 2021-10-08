@@ -40,8 +40,6 @@ export declare type KudosVc = DaemonVc & {
   credentialSubject: {
     message: string,
     description: string,
-    // credentialId: string, // unique ID we generate for this VC
-    // id: string, // ID of DID that the kudos are for
     daoId: string, // for ease of relating VCs received within a specific DAO
   },
 }
