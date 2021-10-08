@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import {Avatar, Button, Image, Spin} from 'antd';
-import { EllipsisOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { ShareAltOutlined } from '@ant-design/icons';
 import ProfileTimeline from "./ProfileTimeline";
 import ProfileLink from "./ProfileLink";
 import ProfileSection from "./ProfileSection";
@@ -46,7 +46,6 @@ const ProfileContainer: FC<Props> = ({
             </div>
             <div className="ProfileContainer--actions">
               <Button type="primary" icon={<ShareAltOutlined />} size="large">Share</Button>
-              <Button shape="circle" icon={<EllipsisOutlined />} size="large" />
             </div>
           </ProfileSection>
           <ProfileSection className="ProfileContainer--identities">
@@ -63,7 +62,7 @@ const ProfileContainer: FC<Props> = ({
             <p>Nullam placerat ex eu orci euismod, a vulputate risus ornare. Nulla sed finibus odio. Donec elementum nulla quam, non aliquet odio efficitur ut. Curabitur et eleifend leo. Quisque ut turpis sit amet purus bibendum fermentum. Proin nulla magna, eleifend eu congue sed, sollicitudin ac felis. Praesent sed ornare leo. Donec vehicula, odio id molestie congue, ante quam posuere dolor, sit amet varius odio purus quis nisi.</p>
           </ProfileSection>
           <ProfileSection spaced>
-            <h2>Work Experience</h2>
+            <h2>{isPunk ? 'My DAOs' : 'My Punks'}</h2>
             <ProfileWork />
           </ProfileSection>
           <hr />

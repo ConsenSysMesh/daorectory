@@ -67,6 +67,7 @@ const KudoCard: FC<Props> = ({
         visible={modalVisible}
         onCancel={handleOk}
         footer={null}
+        className="ProfileCard--modal"
       >
         <SyntaxHighlighter language="json" style={darcula}>
           {JSON.stringify(JSON.parse(sampleJson), null, 2)}

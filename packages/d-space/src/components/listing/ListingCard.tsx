@@ -20,7 +20,7 @@ const ListingCard: FC<Props> = ({
       <Card
         className="ListingCard"
         hoverable
-        cover={<img alt="example" src="/card-bg.png" />}
+        // cover={<img alt="example" src="/card-bg.png" />}
       >
         <div className="ListingCard--body">
           <div className="ListingCard--avatar">

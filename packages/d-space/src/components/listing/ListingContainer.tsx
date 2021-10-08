@@ -10,9 +10,16 @@ type Props = {
 
 const ListingContainer: FC<Props> = ({ type, objects }) => (
   <div className="ListingContainer">
-    <Space size={[16, 16]} wrap>
-      {objects.map(o => <ListingCard type={type} key={o.id} object={o} />)}
-    </Space>
+    <div className="ListingContainer--title">
+      <h1>D-Space</h1>
+      <p>Resistance is futile. Bow down to our Daemon overlord.</p>
+    </div>
+
+    <div className="ListingContainer--container">
+      <Space size={[16, 70]} wrap>
+        {objects.map(o => <ListingCard type={type} key={o.id} object={o} />)}
+      </Space>
+    </div>
   </div>
 );
 
