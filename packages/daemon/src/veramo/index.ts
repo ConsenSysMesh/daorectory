@@ -16,7 +16,7 @@ import { Entities, KeyStore, DIDStore, DataStore, IDataStoreORM, DataStoreORM, P
 import { CredentialIssuer, ICredentialIssuer } from '@veramo/credential-w3c'
 // TypeORM is installed with `@veramo/data-store`
 import { createConnection } from 'typeorm';
-import { VeramoAgentConfigOverrides } from "./veramo-types";
+import { VeramoAgentConfigOverrides } from '@sobol/daemon-types/veramo-types';
 // This will be the name for the local sqlite database for demo purposes
 const DATABASE_FILE = 'database.sqlite';
 

@@ -20,7 +20,8 @@
     "@types/express": "^4.17.13",
     "@types/node": "^16.10.3",
     "@types/node-fetch": "^2.5.12",
-    "jest": "^27.2.4",
+    "@veramo/core": "^3.0.0",
+    "jest": "26.6.0",
     "jest-extended": "^0.11.5",
     "typescript": "^4.4.3"
   }

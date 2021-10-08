@@ -6,7 +6,7 @@ import {
   createPunkProfileVc, createSecondedKudosVc, findSecondedKudos,
 } from '../veramo/did-manager';
 import { userMention } from '@discordjs/builders';
-import { Message, MessageEmbed } from 'discord.js';
+import { GuildChannel, Message, MessageEmbed } from 'discord.js';
 import _ from 'lodash';
 
 console.log('Starting Daemon Discord bot...');
@@ -19,7 +19,7 @@ discordClient.on('ready', async () => {
     const vc = await createDaoProfileVc(guild.id, {
       name: guild.name,
       discordId: guild.id,
-      avatarUrl: guild.iconURL(),
+      avatarUrl: guild.iconURL({ size: 512 }),
     });
     console.log(vc);
   }));
@@ -41,20 +41,25 @@ discordClient.on('interactionCreate', async (interaction) => {
 
         const recipientVc = await createPunkProfileVc(recipient.id, {
           name: recipient.displayName,
+          handle: `${recipient.user.username}#${recipient.user.discriminator}`,
           discordId: recipient.id,
-          avatarUrl: recipient.user.displayAvatarURL(),
+          avatarUrl: recipient.user.displayAvatarURL({ size: 512 }),
         });
 
         const fromVc = await createPunkProfileVc(from.id, {
           name: from.displayName,
+          handle: `${from.user.username}#${from.user.discriminator}`,
           discordId: from.id,
-          avatarUrl: from.user.displayAvatarURL(),
+          avatarUrl: from.user.displayAvatarURL({ size: 512 }),
         });
         console.log(recipientVc, fromVc);
+
+        const channel = interaction.channel as GuildChannel;
 
         const vc = await createKudosVc(recipient.id, interaction.user.id, interaction.guildId, {
           message,
           description: regarding,
+          channel: `#${channel.name}`,
         });
 
         console.log('Issued kudos VC:', vc);
@@ -108,6 +113,7 @@ discordClient.on('messageReactionAdd', async (messageReaction) => {
   await messageReaction.users.fetch();
 
   const secondedUsers = [...messageReaction.users.cache.keys()].filter(id => id !== discordClient.user.id);
+  console.log([...messageReaction.users.cache.values()].map(u => u.displayAvatarURL({ size: 512 })));
   console.log(secondedUsers);
 
   const secondedKudos = await findSecondedKudos(kudosId);

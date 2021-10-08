@@ -1,12 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './styles/index.less';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ConfigProvider as AntdProvider } from 'antd';
+import { BrowserRouter as ReactRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ReactRouter>
+      <AntdProvider>
+        <App />
+      </AntdProvider>
+    </ReactRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

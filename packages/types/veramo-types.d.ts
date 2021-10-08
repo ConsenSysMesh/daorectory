@@ -6,13 +6,6 @@ export declare type VeramoAgentConfigOverrides = {
   infuraProjectId: string,
 };
 
-export enum VcTypes {
-  DaoProfile = 'daoProfile',
-  PunkProfile = 'punkProfile',
-  Kudos = 'kudos',
-  SecondedKudos = 'secondedKudos',
-}
-
 declare interface DaemonVc extends VerifiableCredential {
   credentialSubject: {
     id: string, // ID of DID that the VC is for
@@ -31,6 +24,7 @@ export declare type DaoProfileVc = DaemonVc & {
 export declare type PunkProfileVc = DaemonVc & {
   credentialSubject: {
     name: string,
+    handle: string,
     discordId: string,
     avatarUrl: string,
   }
@@ -41,6 +35,9 @@ export declare type KudosVc = DaemonVc & {
     message: string,
     description: string,
     daoId: string, // for ease of relating VCs received within a specific DAO
+    daoDid: string, // for ease of relating VCs received within a specific DAO
+    issuerId: string;
+    channel: string;
   },
 }
 
@@ -49,6 +46,7 @@ export declare type SecondedKudosVc = DaemonVc & {
     originalKudosId: string, // reference to credentialId of the original kudos
     message?: string, // optional msg to go with +1 sentiment
     daoId: string, // for ease of relating VCs received within a specific DAO
+    daoDid: string, // for ease of relating VCs received within a specific DAO
     issuerId: string;
   },
 }

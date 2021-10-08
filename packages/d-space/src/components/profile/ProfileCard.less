@@ -1,0 +1,73 @@
+.ProfileCard {
+  background: linear-gradient(90deg, rgba(118, 132, 231, 0.1) 0%, rgba(162, 98, 231, 0.1) 99.82%, rgba(118, 132, 231, 0.1) 197.42%) !important;
+  border-radius: 12px !important;
+  border: none !important;
+
+  &--modal {
+    .ant-modal-content {
+      background: #2E2F3E !important;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .ant-modal-header {
+      background: #2E2F3E !important;
+      border: none;
+    }
+  }
+
+  &--info {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  &--dot {
+    color: rgba(247, 247, 248, 0.5);
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+
+  &--button {
+    color: rgba(118, 132, 231, 1);
+    background: linear-gradient(rgba(118, 132, 231, 1), rgba(162, 98, 231, 1));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  // antd overrides
+  .ant-card-actions {
+    background: transparent !important;
+
+    // TBD: hover state needed
+   border-image: -webkit-gradient(linear, left top, left bottom, from(rgba(118, 132, 231, 0.25)), to(rgba(162, 98, 231, 0.25)), color-stop(0.5, rgba(162, 98, 231, 0.25)), color-stop(0.5, rgba(118, 132, 231, 0.25))) 21 30 30 21 repeat repeat;
+  }
+
+  .ant-card-body {
+    padding: 16px;
+    font-weight: bold;
+    font-size: 16px;
+
+    p {
+      margin-left: 4px;
+    }
+  }
+
+  .ant-card-head {
+    border: none;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 14px;
+
+    .ProfileCard--dot {
+      margin-left: 0 !important;
+    }
+  }
+
+  .ant-card-head-title {
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+}

@@ -12,15 +12,21 @@ import {
 import { IDataStoreORM } from "@veramo/data-store";
 import { ICredentialIssuer } from '@veramo/credential-w3c'
 import { Connection } from "typeorm";
-import {
+import type {
   DaoProfileVc,
   KudosVc,
   PunkProfileVc,
   SecondedKudosVc,
-  VcTypes,
   VeramoAgentConfigOverrides,
-} from "./veramo-types";
+} from '@sobol/daemon-types/veramo-types';
 import fs from "fs";
+
+export enum VcTypes {
+  DaoProfile = 'daoProfile',
+  PunkProfile = 'punkProfile',
+  Kudos = 'kudos',
+  SecondedKudos = 'secondedKudos',
+}
 
 // requires calling initVeramo to create this local singleton agent and dbConnection
 let agent: TAgent<IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & ICredentialIssuer>;
@@ -66,6 +72,20 @@ export const _clearVeramo = async () => {
 export const getAllDids = async () => agent.didManagerFind({ provider: DID_PROVIDER });
 
 export const getAllVcs = async () => agent.dataStoreORMGetVerifiableCredentials({});
+
+export const getAllDaoVcs = () =>
+  agent.dataStoreORMGetVerifiableCredentials({
+    where: [
+      { column: 'type', value: [`VerifiableCredential,${VcTypes.DaoProfile}`] },
+    ],
+  });
+
+export const getAllPunkVcs = () =>
+  agent.dataStoreORMGetVerifiableCredentials({
+    where: [
+      { column: 'type', value: [`VerifiableCredential,${VcTypes.PunkProfile}`] },
+    ],
+  });
 
 const _daoAlias = (name:string) => {
   const lowercaseName = name.toLowerCase();
@@ -166,7 +186,7 @@ export const createKudosVc = async (
   forPunk: string,
   fromPunk: string,
   daoName: string,
-  kudos: Omit<KudosVc['credentialSubject'], 'credentialId' | 'id' | 'daoId'>,
+  kudos: Omit<KudosVc['credentialSubject'], 'credentialId' | 'id' | 'daoId' | 'daoDid' | 'issuerId'>,
 ): Promise<KudosVc> => {
   const forDid = await findOrCreatePunk(forPunk);
   const fromDid = await findOrCreatePunk(fromPunk);
@@ -178,7 +198,9 @@ export const createKudosVc = async (
     // resolving the DAO's did here based on its name
     {
       ...kudos,
-      daoId: daoDid.did,
+      issuerId: fromPunk,
+      daoId: daoName,
+      daoDid: daoDid.did,
     });
 };
 
@@ -198,6 +220,7 @@ export const createSecondedKudosVc = async (fromPunk: string, originalKudosVcId:
       originalKudosId: originalKudosVcId,
       issuerId: fromPunk,
       daoId: credentialSubject.daoId,
+      daoDid: credentialSubject.daoDid,
     });
 };
 
