@@ -8,6 +8,11 @@ const ApiClient = {
       const result = await response.json();
       return result as DaoProfileVc[];
     },
+    getDao: async (daoId: string) => {
+      const response = await fetch(`http://localhost:8081/vcs/daos/${daoId}`);
+      const result = await response.json();
+      return result as DaoProfileVc;
+    },
     getPunks: async () => {
       const response = await fetch('http://localhost:8081/vcs/punks');
       const result = await response.json();
