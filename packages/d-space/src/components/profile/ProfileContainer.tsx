@@ -66,10 +66,11 @@ const ProfileContainer: FC<Props> = ({
             <h2>{isPunk ? 'My DAOs' : 'My Punks'}</h2>
             <ProfileWork />
           </ProfileSection>
-          <ProfileSection spaced>
-            <h2>Timeline</h2>
+
+          {kudos.length ? <ProfileSection spaced>
+            <h2>Verified Claims</h2>
             <ProfileTimeline kudos={kudos} secondedKudos={secondedKudos} />
-          </ProfileSection>
+          </ProfileSection> : null}
         </>
       )}
     </div>
