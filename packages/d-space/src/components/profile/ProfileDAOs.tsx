@@ -11,7 +11,7 @@ const ProfileDAOs: FC<{ kudos: KudosVc[] }> = ({ kudos }) => {
   const { daoProfilesById } = useContext(AppContext);
   const daoIds = useMemo(() => Object.entries(
     _.groupBy(kudos, k => k.credentialSubject.daoId)),
-    [],
+    [kudos],
   );
   return (
     <Space size={[0, 0]} wrap className="ProfileContainer--work">

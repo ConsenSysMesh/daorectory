@@ -11,7 +11,7 @@ const ProfilePunks: FC<{ daoId?: string }> = ({ daoId }) => {
       .filter(([, kudos]) => {
         return kudos.find(k => k.credentialSubject.daoId === daoId);
       }),
-    [],
+    [kudosByPunkId, daoId],
   );
   return (
     <Space size={[0, 0]} wrap className="ProfileContainer--work">
@@ -20,7 +20,7 @@ const ProfilePunks: FC<{ daoId?: string }> = ({ daoId }) => {
         return (
           <ProfileLink
             title={punk?.credentialSubject?.name}
-            to={`/${Objects.Dao}/${daoId}`}
+            to={`/${Objects.Punk}/${punkId}`}
             src={punk?.credentialSubject?.avatarUrl}
             isTile
             badgeCount={kudos.length}
