@@ -9,13 +9,17 @@ type Props = {
   size?: SizeType,
   badgeCount?: number,
   isTile?: boolean,
+  src?: string,
 }
+
+const defaultUrl = 'https://lh3.googleusercontent.com/GD12XpZ4TUHe3tgStlzewrwm27j40AVdv8vvZbCmWfTFzLBHvIsGSVfNYSz0_kKWVg3aDNQAbF2pTuLEFWUus2EZrA7eLiZYAB_kAA=s0';
 
 const ProfileLink: FC<Props> = ({
   title,
   size,
   badgeCount,
   isTile = false,
+  src,
 }) => {
   const avatarSize = useMemo(() => {
     if (size === 'small') return 20;
@@ -33,7 +37,7 @@ const ProfileLink: FC<Props> = ({
     <Button size={size} type="text" className={className}>
       <Avatar
         size={avatarSize}
-        src="https://lh3.googleusercontent.com/GD12XpZ4TUHe3tgStlzewrwm27j40AVdv8vvZbCmWfTFzLBHvIsGSVfNYSz0_kKWVg3aDNQAbF2pTuLEFWUus2EZrA7eLiZYAB_kAA=s0"
+        src={src || defaultUrl}
       /> <div className="ProfileLink--title">{title} {badgeCount && <Badge className="ProfileLink--badge" count={<><TrophyOutlined /> {badgeCount}</>} />}</div>
     </Button>
   );
