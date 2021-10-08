@@ -19,7 +19,10 @@ const Profile: FunctionComponent<ProfileProps> = ({ type }) => {
   const { params: { id } } = match;
   const [profile, setProfile] = useState<DaoProfileVc | PunkProfileVc | null>(null);
   useEffect(() => {
-    if (type === Objects.Punk) {
+    if (type === Objects.Dao) {
+      ApiClient.Vcs.getDao(id)
+        .then(profile => setProfile(profile))
+    } else {
       ApiClient.Vcs.getPunk(id)
         .then(profile => setProfile(profile))
     }

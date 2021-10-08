@@ -11,7 +11,7 @@ type Props = {
 const ListingContainer: FC<Props> = ({ type, objects }) => (
   <div className="ListingContainer">
     <Space size={[16, 16]} wrap>
-      {objects.map(o => <ListingCard key={o.id} object={o} />)}
+      {objects.map(o => <ListingCard type={type} key={o.id} object={o} />)}
     </Space>
   </div>
 );

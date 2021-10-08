@@ -25,7 +25,7 @@ const Router = () => (
       <Listing type={Objects.Punk} />
     </Route>
     <Route path={Routes.Dao}>
-      <Profile type={Objects.Punk} />
+      <Profile type={Objects.Dao} />
     </Route>
     <Route path={Routes.Punk}>
       <Profile type={Objects.Punk} />
