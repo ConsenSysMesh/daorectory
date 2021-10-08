@@ -17,7 +17,7 @@ const Header = () => {
       <a href="https://sobol.io/" target="_blank"  rel="noreferrer">
         <img alt="Sobol" src="/logo-dark.png" className="Header--logo" />
       </a>
-      <Menu theme="dark" mode="horizontal" selectedKeys={[pathname]}>
+      <Menu theme="dark" mode="horizontal" selectedKeys={[pathname]} className="Header--menu">
         <Menu.Item key={Routes.Daos}>
           <NavLink to={Routes.Daos}>DAO Directory</NavLink>
         </Menu.Item>
