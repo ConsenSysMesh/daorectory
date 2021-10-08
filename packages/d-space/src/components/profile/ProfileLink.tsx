@@ -37,7 +37,7 @@ const ProfileLink: FC<Props> = ({
   });
 
   return (
-    <Link to={to}>
+    <Link to={to} className="ProfileLink--link">
       <Button size={size} type="text" className={className}>
         <Avatar
           size={avatarSize}

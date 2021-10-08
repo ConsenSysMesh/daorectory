@@ -4,8 +4,7 @@ import ProfileLink from "./ProfileLink";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { darcula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { DaoProfileVc, KudosVc, PunkProfileVc } from '@sobol/daemon-types/veramo-types';
-import { Link } from 'react-router-dom';
-import { Objects, Pages } from '../../config/constants';
+import { Objects } from '../../config/constants';
 
 type Props = {
   kudos: KudosVc,
@@ -76,6 +75,7 @@ const KudoCard: FC<Props> = ({
         onCancel={handleOk}
         footer={null}
         className="ProfileCard--modal"
+        width={800}
       >
         <SyntaxHighlighter language="json" style={darcula}>
           {JSON.stringify(JSON.parse(sampleJson), null, 2)}
