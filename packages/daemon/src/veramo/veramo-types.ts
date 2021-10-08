@@ -1,3 +1,5 @@
+import { VerifiableCredential } from '@veramo/core';
+
 export declare type VeramoAgentConfigOverrides = {
   dbFile: string,
   veramoSecret: string,
@@ -11,28 +13,43 @@ export enum VcTypes {
   SecondedKudos = 'secondedKudos',
 }
 
-export declare type DaoProfileVcSubject = {
-  name: string,
-  discordId: string,
-  avatarUrl: string,
-};
+declare interface DaemonVc extends VerifiableCredential {
+  credentialSubject: {
+    id: string, // ID of DID that the VC is for
+    credentialId: string;
+  }
+}
 
-export declare type PunkProfileVcSubject = {
-  name: string,
-  discordId: string,
-  avatarUrl: string,
-};
+export declare type DaoProfileVc = DaemonVc & {
+  credentialSubject: {
+    name: string,
+    discordId: string,
+    avatarUrl: string,
+  }
+}
 
-export declare type KudosVcSubject = {
-  message: string,
-  description: string,
-  credentialId?: string, // unique ID we generate for this VC
-  daoId?: string, // for ease of relating VCs received within a specific DAO
-};
+export declare type PunkProfileVc = DaemonVc & {
+  credentialSubject: {
+    name: string,
+    discordId: string,
+    avatarUrl: string,
+  }
+}
 
-export declare type SecondedKudosVcSubject = {
-  originalKudosId: string, // reference to credentialId of the original kudos
-  credentialId?: string,  // unique ID we generate for this VC
-  daoId?: string, // for ease of relating VCs received within a specific DAO
-  message?: string, // optional msg to go with +1 sentiment
-};
+export declare type KudosVc = DaemonVc & {
+  credentialSubject: {
+    message: string,
+    description: string,
+    // credentialId: string, // unique ID we generate for this VC
+    // id: string, // ID of DID that the kudos are for
+    daoId: string, // for ease of relating VCs received within a specific DAO
+  },
+}
+
+export declare type SecondedKudosVc = DaemonVc & {
+  credentialSubject: {
+    originalKudosId: string, // reference to credentialId of the original kudos
+    message?: string, // optional msg to go with +1 sentiment
+    daoId: string, // for ease of relating VCs received within a specific DAO
+  },
+}

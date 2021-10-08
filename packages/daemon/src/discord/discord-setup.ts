@@ -6,7 +6,7 @@ import {
   createPunkProfileVc,
 } from '../veramo/did-manager';
 import { userMention } from '@discordjs/builders';
-import { GuildMember, MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 
 console.log('Starting Daemon Discord bot...');
 
@@ -54,22 +54,25 @@ discordClient.on('interactionCreate', async (interaction) => {
         const vc = await createKudosVc(recipient.id, interaction.user.id, interaction.guildId, {
           message,
           description: regarding,
-          daoId: interaction.guildId,
         });
 
         console.log('Issued kudos VC:', vc);
-        await interaction.reply({
-          content: `Kudos! ${userMention(recipient.id)}`,
+        const kudosMessage = await interaction.reply({
+          content: `Kudos! ${userMention(recipient.id)}\n\nReact with :+1: to second!`,
           embeds: [
             new MessageEmbed()
               .setTitle(message)
               .setDescription(regarding)
               .setThumbnail(recipient.user.avatarURL())
               .addField('From', userMention(interaction.user.id))
-              .addField('KudosID', 'No ID currently, sorry eh')
+              .addField('KudosID', vc.credentialSubject.credentialId)
               .setTimestamp(),
           ],
+          fetchReply: true,
         });
+        if (kudosMessage instanceof Message) {
+          await kudosMessage.react('👍');
+        }
         break;
       }
       default: {
@@ -80,6 +83,23 @@ discordClient.on('interactionCreate', async (interaction) => {
       }
     }
   }
+});
+
+discordClient.on('messageReactionAdd', async (messageReaction) => {
+  if (messageReaction.partial) {
+    messageReaction = await messageReaction.fetch();
+  }
+
+  if (!messageReaction.message.embeds?.length) return;
+
+  const [embed] = messageReaction.message.embeds;
+  const kudosIdField = embed.fields.find(f => f.name === 'KudosID');
+  if (!kudosIdField) return;
+
+  const secondedUsers = [...messageReaction.users.cache.keys()].filter(id => id !== discordClient.user.id);
+
+  console.log('The following users have seconded:', secondedUsers);
+  // TODO: Create seconded VC
 });
 
 discordClient.on('guildJoin', async (guild) => {

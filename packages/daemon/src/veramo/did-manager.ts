@@ -1,16 +1,24 @@
 import { v4 as uuidv4 } from 'uuid';
-import { createVeramoAgent, SERVICE_DID_ALIAS, DID_PROVIDER, KMS } from './index';
-import {IDataStore, IDIDManager, IIdentifier, IKeyManager, IResolver, TAgent} from "@veramo/core";
-import {IDataStoreORM} from "@veramo/data-store";
+import { createVeramoAgent, DID_PROVIDER, KMS, SERVICE_DID_ALIAS } from './index';
+import {
+  IDataStore,
+  IDIDManager,
+  IIdentifier,
+  IKeyManager,
+  IResolver,
+  TAgent,
+  VerifiableCredential,
+} from "@veramo/core";
+import { IDataStoreORM } from "@veramo/data-store";
 import { ICredentialIssuer } from '@veramo/credential-w3c'
 import { Connection } from "typeorm";
 import {
-  VeramoAgentConfigOverrides,
+  DaoProfileVc,
+  KudosVc,
+  PunkProfileVc,
+  SecondedKudosVc,
   VcTypes,
-  KudosVcSubject,
-  DaoProfileVcSubject,
-  PunkProfileVcSubject,
-  SecondedKudosVcSubject,
+  VeramoAgentConfigOverrides,
 } from "./veramo-types";
 import fs from "fs";
 
@@ -108,17 +116,20 @@ export const findOrCreatePunk = async (name:string) => findOrCreateDid(_punkAlia
  * @param forDao
  * @param profile
  */
-export const createDaoProfileVc = async (forDao:string, profile:DaoProfileVcSubject) => {
+export const createDaoProfileVc = async (
+  forDao: string,
+  profile: Omit<DaoProfileVc['credentialSubject'], 'id' | 'credentialId'>,
+): Promise<DaoProfileVc> => {
   const forDid = await findOrCreateDao(forDao);
   const didVcs = await findVcsForDao(forDao, VcTypes.DaoProfile);
-  if (didVcs.length > 0) return didVcs[0];
-  const verifiableCredential = await _createVc(
+  if (didVcs.length > 0) return didVcs[0].verifiableCredential as DaoProfileVc;
+  return await _createVc<DaoProfileVc>(
     forDid.did,
     daemonId,
     VcTypes.DaoProfile,
     // resolving the DAO's did here based on its name
-    profile);
-  return verifiableCredential;
+    profile,
+  );
 };
 
 /**
@@ -126,47 +137,59 @@ export const createDaoProfileVc = async (forDao:string, profile:DaoProfileVcSubj
  * @param forPunk
  * @param profile
  */
-export const createPunkProfileVc = async (forPunk:string, profile:PunkProfileVcSubject) => {
+export const createPunkProfileVc = async (
+  forPunk: string,
+  profile: Omit<PunkProfileVc['credentialSubject'], 'id' | 'credentialId'>,
+): Promise<PunkProfileVc> => {
   const forDid = await findOrCreatePunk(forPunk);
   const didVcs = await findVcsForPunk(forPunk, VcTypes.PunkProfile);
-  if (didVcs.length > 0) return didVcs[0];
-  const verifiableCredential = await _createVc(
+  if (didVcs.length > 0) return didVcs[0].verifiableCredential as PunkProfileVc;
+  return await _createVc<PunkProfileVc>(
     forDid.did,
     daemonId,
     VcTypes.PunkProfile,
     // resolving the DAO's did here based on its name
-    profile);
-  return verifiableCredential;
+    profile,
+  );
 };
+
+const vcIsKudos = (vc: VerifiableCredential): vc is KudosVc => vc.verifiableCredential.type.includes(VcTypes.Kudos);
 
 /**
  * Creates a Kudos VC from one punk to another punk DID alias
  * @param forPunk
  * @param fromPunk
- * @param daoName Name of the DAO discord server were the activity took plage
+ * @param daoName Name of the DAO discord server where the activity took place
  * @param kudos
  */
-export const createKudosVc = async (forPunk:string, fromPunk:string, daoName:string, kudos:KudosVcSubject) => {
+export const createKudosVc = async (
+  forPunk: string,
+  fromPunk: string,
+  daoName: string,
+  kudos: Omit<KudosVc['credentialSubject'], 'credentialId' | 'id' | 'daoId'>,
+): Promise<KudosVc> => {
   const forDid = await findOrCreatePunk(forPunk);
   const fromDid = await findOrCreatePunk(fromPunk);
   const daoDid = await findDaoDid(daoName);
-  const verifiableCredential = await _createVc(
+  return await _createVc<KudosVc>(
     forDid.did,
     fromDid.did,
     VcTypes.Kudos,
     // resolving the DAO's did here based on its name
-    {...kudos, daoId: daoDid.did });
-  return verifiableCredential;
+    {
+      ...kudos,
+      daoId: daoDid.did,
+    });
 };
 
-export const createSecondedKudosVc = async (fromPunk:string, originalKudosVcId: string) => {
+export const createSecondedKudosVc = async (fromPunk: string, originalKudosVcId: string): Promise<SecondedKudosVc> => {
   const originalVc = await findVcByCredentialId(originalKudosVcId);
-  if (!originalVc || !originalVc.verifiableCredential.type.includes(VcTypes.Kudos)) {
+  if (!originalVc || !vcIsKudos(originalVc.verifiableCredential)) {
     throw new Error('Could not find a Kudos VC with that credentialId');
   }
   const { credentialSubject } = originalVc.verifiableCredential;
   const fromDid = await findOrCreatePunk(fromPunk);
-  const verifiableCredential = await _createVc(
+  return await _createVc<SecondedKudosVc>(
     credentialSubject.id,
     fromDid.did,
     VcTypes.SecondedKudos,
@@ -175,11 +198,15 @@ export const createSecondedKudosVc = async (fromPunk:string, originalKudosVcId: 
       originalKudosId: originalKudosVcId,
       daoId: credentialSubject.daoId,
     });
-  return verifiableCredential;
 };
 
-const _createVc = async (forDid:string, fromDid:string, credentialType:string, credential:object) => {
- return agent.createVerifiableCredential({
+async function _createVc<VcType extends VerifiableCredential>(
+  forDid: string,
+  fromDid: string,
+  credentialType: string,
+  credential: Partial<VcType['credentialSubject']>,
+): Promise<VcType> {
+ const vc = await agent.createVerifiableCredential({
     credential: {
       issuer: { id: fromDid },
       '@context': ['https://www.w3.org/2018/credentials/v1'],
@@ -194,6 +221,7 @@ const _createVc = async (forDid:string, fromDid:string, credentialType:string, c
     proofFormat: 'jwt',
     save: true,
   });
+ return vc as VcType;
 }
 
 export const findVcsForDao = async (dao: string, vcType: string = VcTypes.Kudos) => {
