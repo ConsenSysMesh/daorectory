@@ -24,6 +24,7 @@ export declare type DaoProfileVc = DaemonVc & {
 export declare type PunkProfileVc = DaemonVc & {
   credentialSubject: {
     name: string,
+    handle: string,
     discordId: string,
     avatarUrl: string,
   }

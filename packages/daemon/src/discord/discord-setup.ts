@@ -41,12 +41,14 @@ discordClient.on('interactionCreate', async (interaction) => {
 
         const recipientVc = await createPunkProfileVc(recipient.id, {
           name: recipient.displayName,
+          handle: `${recipient.user.username}#${recipient.user.discriminator}`,
           discordId: recipient.id,
           avatarUrl: recipient.user.displayAvatarURL(),
         });
 
         const fromVc = await createPunkProfileVc(from.id, {
           name: from.displayName,
+          handle: `${from.user.username}#${from.user.discriminator}`,
           discordId: from.id,
           avatarUrl: from.user.displayAvatarURL(),
         });
