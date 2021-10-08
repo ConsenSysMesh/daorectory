@@ -52,6 +52,7 @@ const ProfileContainer: FC<Props> = ({
             { isPunk && (
               <ProfileLink
                 title={profile?.credentialSubject.handle}
+                to="#"
                 src="/discord.png"
                 size="small"
               />

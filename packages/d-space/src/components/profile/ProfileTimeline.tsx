@@ -27,6 +27,7 @@ const KudosTimelineItem: FC<{ kudos: KudosVc, secondedKudos: SecondedKudosVc[] }
   return (
     <Timeline.Item className="ProfileTimeline--item">
       <KudoCard
+        kudos={kudos}
         issuerProfile={issuerPunk}
         dao={dao}
         regarding={kudos.credentialSubject.description}

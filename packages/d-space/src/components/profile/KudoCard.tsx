@@ -1,11 +1,14 @@
-import React, {FC, useState} from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { Card, Modal } from "antd";
 import ProfileLink from "./ProfileLink";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { darcula } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { DaoProfileVc, PunkProfileVc } from '@sobol/daemon-types/veramo-types';
+import { DaoProfileVc, KudosVc, PunkProfileVc } from '@sobol/daemon-types/veramo-types';
+import { Link } from 'react-router-dom';
+import { Objects, Pages } from '../../config/constants';
 
 type Props = {
+  kudos: KudosVc,
   issuerProfile?: PunkProfileVc,
   dao?: DaoProfileVc,
   regarding: string,
@@ -14,6 +17,7 @@ type Props = {
 }
 
 const KudoCard: FC<Props> = ({
+  kudos,
   issuerProfile,
   dao,
   regarding,
@@ -33,7 +37,7 @@ const KudoCard: FC<Props> = ({
 
   const dot = <span className="ProfileCard--dot">•</span>;
 
-  const sampleJson = '{"name":"John", "age":30, "car":null}';
+  const sampleJson = useMemo(() => JSON.stringify(kudos), [kudos]);
 
   const handleOk = () => {
     setModalVisible(false);
@@ -42,13 +46,16 @@ const KudoCard: FC<Props> = ({
   return (
     <>
       <Card
-        title={<>
-          <ProfileLink
-            title={issuerProfile?.credentialSubject?.name || ''}
-            src={issuerProfile?.credentialSubject?.avatarUrl}
-            size="large"
-          /> {dot} DID
-        </>}
+        title={
+          <>
+            <ProfileLink
+              title={issuerProfile?.credentialSubject?.name || ''}
+              to={`/${Objects.Punk}/${issuerProfile?.credentialSubject?.discordId}`}
+              src={issuerProfile?.credentialSubject?.avatarUrl}
+              size="large"
+            /> {dot} DID
+          </>
+        }
         actions={[cardButtons]}
         className="ProfileCard"
       >
@@ -57,6 +64,7 @@ const KudoCard: FC<Props> = ({
           <ProfileLink
             title={dao?.credentialSubject?.name}
             src={dao?.credentialSubject?.avatarUrl}
+            to={`/${Objects.Dao}/${dao?.credentialSubject?.discordId}`}
             size="small"
           /> {dot} {channel} {dot} DID {dot} Seconders ({seconders})
         </div>

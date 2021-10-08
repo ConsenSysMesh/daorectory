@@ -3,11 +3,13 @@ import { Avatar, Button, Badge } from "antd";
 import classNames from 'classnames';
 import { TrophyOutlined } from '@ant-design/icons';
 import { SizeType } from "antd/lib/config-provider/SizeContext";
+import { Link } from 'react-router-dom';
 
 type Props = {
   title?: string
   size?: SizeType,
   badgeCount?: number,
+  to: string,
   isTile?: boolean,
   src?: string,
 }
@@ -17,6 +19,7 @@ const defaultUrl = 'https://lh3.googleusercontent.com/GD12XpZ4TUHe3tgStlzewrwm27
 const ProfileLink: FC<Props> = ({
   title,
   size,
+  to,
   badgeCount,
   isTile = false,
   src,
@@ -34,13 +37,15 @@ const ProfileLink: FC<Props> = ({
   });
 
   return (
-    <Button size={size} type="text" className={className}>
-      <Avatar
-        size={avatarSize}
-        src={src || defaultUrl}
-      />
-      <div className="ProfileLink--title">{title} {badgeCount && <Badge className="ProfileLink--badge" count={<><TrophyOutlined /> {badgeCount}</>} />}</div>
-    </Button>
+    <Link to={to}>
+      <Button size={size} type="text" className={className}>
+        <Avatar
+          size={avatarSize}
+          src={src || defaultUrl}
+        />
+        <div className="ProfileLink--title">{title} {badgeCount && <Badge className="ProfileLink--badge" count={<><TrophyOutlined /> {badgeCount}</>} />}</div>
+      </Button>
+    </Link>
   );
 };
 
