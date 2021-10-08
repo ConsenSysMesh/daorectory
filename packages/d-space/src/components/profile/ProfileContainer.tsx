@@ -42,7 +42,7 @@ const ProfileContainer: FC<Props> = ({
           </ProfileSection>
           <ProfileSection className="ProfileContainer--identities">
             { isPunk && (
-              <ProfileLink title={profile?.credentialSubject.handle} size="small" />
+              <ProfileLink title={profile?.credentialSubject.handle} src="/discord.png" size="small" />
             )}
           </ProfileSection>
           <ProfileSection spaced>
