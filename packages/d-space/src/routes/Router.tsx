@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Switch,
   Route,
   Redirect,
+  useLocation,
 } from "react-router-dom";
 
 import Listing from "./Listing";
@@ -16,22 +17,30 @@ export const Routes = {
   Punk: `/${Pages.Punk}/:id`,
 };
 
-const Router = () => (
-  <Switch>
-    <Route path={Routes.Daos}>
-      <Listing type={Objects.Dao} />
-    </Route>
-    <Route path={Routes.Punks}>
-      <Listing type={Objects.Punk} />
-    </Route>
-    <Route path={Routes.Dao}>
-      <Profile type={Objects.Dao} />
-    </Route>
-    <Route path={Routes.Punk}>
-      <Profile type={Objects.Punk} />
-    </Route>
-    <Redirect to={Routes.Daos} />
-  </Switch>
-);
+const Router = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return (
+    <Switch>
+      <Route path={Routes.Daos}>
+        <Listing type={Objects.Dao} />
+      </Route>
+      <Route path={Routes.Punks}>
+        <Listing type={Objects.Punk} />
+      </Route>
+      <Route path={Routes.Dao}>
+        <Profile type={Objects.Dao} />
+      </Route>
+      <Route path={Routes.Punk}>
+        <Profile type={Objects.Punk} />
+      </Route>
+      <Redirect to={Routes.Daos} />
+    </Switch>
+  );
+}
 
 export default Router;
