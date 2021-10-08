@@ -26,10 +26,6 @@ discordClient.on('ready', async () => {
   console.log('Finished creating DIDs/VCs for all guilds');
 });
 
-const avatarOptions = {
-  size: 512,
-};
-
 discordClient.on('interactionCreate', async (interaction) => {
   if (interaction.isCommand() && interaction.inGuild()) {
     const subcommand = interaction.options.getSubcommand();
@@ -114,6 +110,7 @@ discordClient.on('messageReactionAdd', async (messageReaction) => {
   await messageReaction.users.fetch();
 
   const secondedUsers = [...messageReaction.users.cache.keys()].filter(id => id !== discordClient.user.id);
+  console.log([...messageReaction.users.cache.values()].map(u => u.displayAvatarURL({ size: 512 })));
   console.log(secondedUsers);
 
   const secondedKudos = await findSecondedKudos(kudosId);

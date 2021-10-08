@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  findVcsForDao,
   findVcsForPunk,
   getAllDaoVcs,
   getAllPunkVcs,
@@ -32,7 +33,7 @@ router.get('/daos', async (req, res, next) => {
 router.get('/daos/:daoId', async (req, res, next) => {
   try {
     const { daoId } = req.params;
-    const vcs = await findVcsForPunk(daoId, VcTypes.DaoProfile);
+    const vcs = await findVcsForDao(daoId, VcTypes.DaoProfile);
     if (vcs.length === 0) {
       return res.status(404).json({ error: { message: 'DAO not found' } });
     }
