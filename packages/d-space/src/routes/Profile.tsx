@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import ProfileContainer from "../components/profile/ProfileContainer";
+import ProfileContainer from '../components/profile/ProfileContainer';
 
 type ProfileProps = {
   type: string,

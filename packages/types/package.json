@@ -1,0 +1,7 @@
+{
+  "name": "@sobol/daemon-types",
+  "packageManager": "yarn@3.0.2",
+  "dependencies": {
+    "@veramo/core": "^3.0.0"
+  }
+}

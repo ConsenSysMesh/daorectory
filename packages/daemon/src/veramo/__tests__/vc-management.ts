@@ -14,9 +14,8 @@ import {
   createDaoProfileVc,
   findVcsForDao,
   createPunkProfileVc,
-  createSecondedKudosVc, findVcByCredentialId
+  createSecondedKudosVc, findVcByCredentialId, VcTypes,
 } from '../did-manager';
-import {VcTypes} from "../veramo-types";
 
 describe('did-manager', () => {
   let agent = null;

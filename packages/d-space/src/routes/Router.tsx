@@ -12,14 +12,14 @@ import { Objects, Pages } from "../config/constants";
 export const Routes = {
   Daos: `/${Pages.Daos}`,
   Punks: `/${Pages.Punks}`,
-  Dao: `/${Pages.Doa}/:id`,
+  Dao: `/${Pages.Dao}/:id`,
   Punk: `/${Pages.Punk}/:id`,
 };
 
 const Router = () => (
   <Switch>
     <Route path={Routes.Daos}>
-      <Listing type={Objects.Doa} />
+      <Listing type={Objects.Dao} />
     </Route>
     <Route path={Routes.Punks}>
       <Listing type={Objects.Punk} />

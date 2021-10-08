@@ -1,5 +1,5 @@
 export const Objects = {
-  Doa: 'dao',
+  Dao: 'dao',
   Punk: 'punk',
 };
 

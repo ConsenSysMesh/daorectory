@@ -6,13 +6,6 @@ export declare type VeramoAgentConfigOverrides = {
   infuraProjectId: string,
 };
 
-export enum VcTypes {
-  DaoProfile = 'daoProfile',
-  PunkProfile = 'punkProfile',
-  Kudos = 'kudos',
-  SecondedKudos = 'secondedKudos',
-}
-
 declare interface DaemonVc extends VerifiableCredential {
   credentialSubject: {
     id: string, // ID of DID that the VC is for
