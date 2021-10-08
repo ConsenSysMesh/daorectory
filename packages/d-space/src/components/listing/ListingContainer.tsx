@@ -11,8 +11,8 @@ type Props = {
 const ListingContainer: FC<Props> = ({ type, objects }) => (
   <div className="ListingContainer">
     <div className="ListingContainer--title">
-      <h1>The D-Space</h1>
-      <p>An expansive, curated directory of DAOs and Punks that are up to amazing stuff.</p>
+      <h1>D-Space</h1>
+      <p>Resistance is futile. Bow down to our Daemon overlord.</p>
     </div>
 
     <div className="ListingContainer--container">
