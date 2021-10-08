@@ -19,12 +19,16 @@ discordClient.on('ready', async () => {
     const vc = await createDaoProfileVc(guild.id, {
       name: guild.name,
       discordId: guild.id,
-      avatarUrl: guild.iconURL(),
+      avatarUrl: guild.iconURL({ size: 512 }),
     });
     console.log(vc);
   }));
   console.log('Finished creating DIDs/VCs for all guilds');
 });
+
+const avatarOptions = {
+  size: 512,
+};
 
 discordClient.on('interactionCreate', async (interaction) => {
   if (interaction.isCommand() && interaction.inGuild()) {
@@ -43,14 +47,14 @@ discordClient.on('interactionCreate', async (interaction) => {
           name: recipient.displayName,
           handle: `${recipient.user.username}#${recipient.user.discriminator}`,
           discordId: recipient.id,
-          avatarUrl: recipient.user.displayAvatarURL(),
+          avatarUrl: recipient.user.displayAvatarURL({ size: 512 }),
         });
 
         const fromVc = await createPunkProfileVc(from.id, {
           name: from.displayName,
           handle: `${from.user.username}#${from.user.discriminator}`,
           discordId: from.id,
-          avatarUrl: from.user.displayAvatarURL(),
+          avatarUrl: from.user.displayAvatarURL({ size: 512 }),
         });
         console.log(recipientVc, fromVc);
 
