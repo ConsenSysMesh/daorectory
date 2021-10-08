@@ -5,21 +5,30 @@ import ProfileTimeline from "./ProfileTimeline";
 import ProfileLink from "./ProfileLink";
 import ProfileSection from "./ProfileSection";
 import ProfileWork from "./ProfileWork";
-import type { DaemonVc, DaoProfileVc, PunkProfileVc } from '@sobol/daemon-types/veramo-types';
+import type {
+  DaemonVc,
+  DaoProfileVc,
+  KudosVc,
+  PunkProfileVc, SecondedKudosVc,
+} from '@sobol/daemon-types/veramo-types';
 import { Objects } from '../../config/constants';
 
 type Props = {
   profile: PunkProfileVc | DaoProfileVc | null,
   type: string,
   loading: boolean,
+  kudos: KudosVc[],
+  secondedKudos: SecondedKudosVc[],
 }
 
 const isProfilePunk = (profile: DaemonVc | null, type: string): profile is PunkProfileVc => type === Objects.Punk;
 
 const ProfileContainer: FC<Props> = ({
-  profile,
-  type,
-  loading = true,
+ profile,
+ type,
+ kudos,
+ secondedKudos,
+ loading = true,
 }) => {
   const isPunk = isProfilePunk(profile, type);
 
@@ -41,7 +50,11 @@ const ProfileContainer: FC<Props> = ({
           </ProfileSection>
           <ProfileSection className="ProfileContainer--identities">
             { isPunk && (
-              <ProfileLink title={profile?.credentialSubject.handle} src="/discord.png" size="small" />
+              <ProfileLink
+                title={profile?.credentialSubject.handle}
+                src="/discord.png"
+                size="small"
+              />
             )}
           </ProfileSection>
           <ProfileSection spaced>
@@ -54,7 +67,7 @@ const ProfileContainer: FC<Props> = ({
           </ProfileSection>
           <ProfileSection spaced>
             <h2>Timeline</h2>
-            <ProfileTimeline />
+            <ProfileTimeline kudos={kudos} secondedKudos={secondedKudos} />
           </ProfileSection>
         </>
       )}
