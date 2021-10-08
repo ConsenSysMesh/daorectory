@@ -12,6 +12,7 @@ import type {
   PunkProfileVc, SecondedKudosVc,
 } from '@sobol/daemon-types/veramo-types';
 import { Objects } from '../../config/constants';
+import ProfilePunks from './ProfilePunks';
 
 type Props = {
   profile: PunkProfileVc | DaoProfileVc | null,
@@ -64,7 +65,9 @@ const ProfileContainer: FC<Props> = ({
           </ProfileSection>
           <ProfileSection spaced>
             <h2>{isPunk ? 'My DAOs' : 'My Punks'}</h2>
-            <ProfileDAOs kudos={kudos} />
+            { isPunk
+              ? <ProfileDAOs kudos={kudos} />
+              : <ProfilePunks daoId={profile?.credentialSubject?.discordId} />}
           </ProfileSection>
 
           {kudos.length ? <ProfileSection spaced>

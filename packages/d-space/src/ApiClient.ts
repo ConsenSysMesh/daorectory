@@ -28,6 +28,11 @@ const ApiClient = {
       const { kudos, secondedKudos } = await response.json();
       return { kudos, secondedKudos } as { kudos: KudosVc[], secondedKudos: SecondedKudosVc[] };
     },
+    getAllKudos: async () => {
+      const response = await fetch(`http://localhost:8081/vcs/kudos`);
+      const { kudos, secondedKudos } = await response.json();
+      return { kudos, secondedKudos } as { kudos: KudosVc[], secondedKudos: SecondedKudosVc[] };
+    },
   }
 };
 
