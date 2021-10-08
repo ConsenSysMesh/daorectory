@@ -80,6 +80,20 @@ export const getAllDaoVcs = () =>
     ],
   });
 
+export const getAllKudos = () =>
+  agent.dataStoreORMGetVerifiableCredentials({
+    where: [
+      { column: 'type', value: [`VerifiableCredential,${VcTypes.Kudos}`] },
+    ],
+  });
+
+export const getAllSecondedKudos = () =>
+  agent.dataStoreORMGetVerifiableCredentials({
+    where: [
+      { column: 'type', value: [`VerifiableCredential,${VcTypes.SecondedKudos}`] },
+    ],
+  });
+
 export const getAllPunkVcs = () =>
   agent.dataStoreORMGetVerifiableCredentials({
     where: [

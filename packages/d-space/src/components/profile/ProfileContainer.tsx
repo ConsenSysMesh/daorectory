@@ -4,7 +4,7 @@ import { ShareAltOutlined } from '@ant-design/icons';
 import ProfileTimeline from "./ProfileTimeline";
 import ProfileLink from "./ProfileLink";
 import ProfileSection from "./ProfileSection";
-import ProfileWork from "./ProfileWork";
+import ProfileDAOs from "./ProfileDAOs";
 import type {
   DaemonVc,
   DaoProfileVc,
@@ -12,6 +12,7 @@ import type {
   PunkProfileVc, SecondedKudosVc,
 } from '@sobol/daemon-types/veramo-types';
 import { Objects } from '../../config/constants';
+import ProfilePunks from './ProfilePunks';
 
 type Props = {
   profile: PunkProfileVc | DaoProfileVc | null,
@@ -64,7 +65,9 @@ const ProfileContainer: FC<Props> = ({
           </ProfileSection>
           <ProfileSection spaced>
             <h2>{isPunk ? 'My DAOs' : 'My Punks'}</h2>
-            <ProfileWork />
+            { isPunk
+              ? <ProfileDAOs kudos={kudos} />
+              : <ProfilePunks daoId={profile?.credentialSubject?.discordId} />}
           </ProfileSection>
 
           {kudos.length ? <ProfileSection spaced>

@@ -2,8 +2,8 @@ import express from 'express';
 import {
   findVcsForDao,
   findVcsForPunk,
-  getAllDaoVcs,
-  getAllPunkVcs,
+  getAllDaoVcs, getAllKudos,
+  getAllPunkVcs, getAllSecondedKudos,
   getAllVcs,
   VcTypes,
 } from '../veramo/did-manager';
@@ -25,6 +25,19 @@ router.get('/daos', async (req, res, next) => {
     const vcs = await getAllDaoVcs();
     // dropping the envelope object that VCs are wrapped in for convenience
     res.json(vcs.map(vc => vc.verifiableCredential));
+  } catch (e) {
+    next(e);
+  }
+})
+
+router.get('/kudos', async (req, res, next) => {
+  try {
+    const [kudos, secondedKudos] = await Promise.all([getAllKudos(), getAllSecondedKudos()]);
+    // dropping the envelope object that VCs are wrapped in for convenience
+    await res.json({
+      kudos: kudos.map(k => k.verifiableCredential),
+      secondedKudos: secondedKudos.map(k => k.verifiableCredential),
+    });
   } catch (e) {
     next(e);
   }
