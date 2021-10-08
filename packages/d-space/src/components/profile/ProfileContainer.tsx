@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import {Avatar, Button, Image, Spin} from 'antd';
-import { EllipsisOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { ShareAltOutlined } from '@ant-design/icons';
 import ProfileTimeline from "./ProfileTimeline";
 import ProfileLink from "./ProfileLink";
 import ProfileSection from "./ProfileSection";
@@ -37,7 +37,6 @@ const ProfileContainer: FC<Props> = ({
             </div>
             <div className="ProfileContainer--actions">
               <Button type="primary" icon={<ShareAltOutlined />} size="large">Share</Button>
-              <Button shape="circle" icon={<EllipsisOutlined />} size="large" />
             </div>
           </ProfileSection>
           <ProfileSection className="ProfileContainer--identities">
