@@ -4,7 +4,7 @@ import { ShareAltOutlined } from '@ant-design/icons';
 import ProfileTimeline from "./ProfileTimeline";
 import ProfileLink from "./ProfileLink";
 import ProfileSection from "./ProfileSection";
-import ProfileWork from "./ProfileWork";
+import ProfileDAOs from "./ProfileDAOs";
 import type {
   DaemonVc,
   DaoProfileVc,
@@ -64,7 +64,7 @@ const ProfileContainer: FC<Props> = ({
           </ProfileSection>
           <ProfileSection spaced>
             <h2>{isPunk ? 'My DAOs' : 'My Punks'}</h2>
-            <ProfileWork />
+            <ProfileDAOs kudos={kudos} />
           </ProfileSection>
           <ProfileSection spaced>
             <h2>Timeline</h2>
