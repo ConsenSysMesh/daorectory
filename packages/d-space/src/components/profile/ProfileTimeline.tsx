@@ -21,7 +21,7 @@ const KudosTimelineItem: FC<{ kudos: KudosVc, secondedKudos: SecondedKudosVc[] }
 
   const seconders = useMemo(() =>
     secondedKudos.filter(k => k.credentialSubject.originalKudosId === kudos.credentialSubject.credentialId),
-    [secondedKudos],
+    [secondedKudos, kudos.credentialSubject.credentialId],
   );
 
   return (
