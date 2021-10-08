@@ -15,7 +15,7 @@ type RouteParams = {
 
 const Profile: FunctionComponent<ProfileProps> = ({ type }) => {
   const match = useRouteMatch<RouteParams>('/*/:id');
-  if (!match) throw 'NO';
+  if (!match) throw new Error('NO MATCH');
   const { params: { id } } = match;
   const [profile, setProfile] = useState<DaoProfileVc | PunkProfileVc | null>(null);
   useEffect(() => {
@@ -25,9 +25,8 @@ const Profile: FunctionComponent<ProfileProps> = ({ type }) => {
     }
   }, [type, id]);
 
-  if (!profile) return <div>loading</div>;
   return (
-    <ProfileContainer profile={profile} type={type} />
+    <ProfileContainer profile={profile} type={type} loading={!profile} />
   );
 }
 
