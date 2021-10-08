@@ -19,6 +19,7 @@ const Listing: FunctionComponent<ListingProps> = ({ type }) => {
         .then(setObjects);
     }
   }, [type]);
+
   return (
     <ListingContainer objects={objects} type={type} />
   );

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Space } from 'antd';
-import Card from "./Card";
+import ListingCard from "./ListingCard";
 import { DaoProfileVc, PunkProfileVc } from '@sobol/daemon-types/veramo-types';
 
 type Props = {
@@ -9,9 +9,11 @@ type Props = {
 };
 
 const ListingContainer: FC<Props> = ({ type, objects }) => (
-  <Space size={[16, 16]} wrap className="ListingContainer">
-    {objects.map(o => <Card key={o.id} />)}
-  </Space>
+  <div className="ListingContainer">
+    <Space size={[16, 16]} wrap>
+      {objects.map(o => <ListingCard key={o.id} object={o} />)}
+    </Space>
+  </div>
 );
 
 export default ListingContainer;
