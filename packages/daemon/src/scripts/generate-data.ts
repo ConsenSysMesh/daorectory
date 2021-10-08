@@ -41,18 +41,22 @@ const main = async () => {
   const vc1 = await createKudosVc(dao1Punk1, dao1Punk2, daoName1, {
     message: 'You\'re awesome!',
     description: 'Because you did great on the thing! 👏👏👏',
+    channel: '#general',
   });
   const vc2 = await createKudosVc(dao1Punk2, dao1Punk1, daoName1, {
     message: 'You\'re great!',
     description: 'Cuz you gave me kudos earlier! 🎉🎉',
+    channel: '#general',
   });
   await createKudosVc(dao1Punk1, dao1Punk3, daoName1, {
     message: 'You\'ve been killing it lately!',
     description: 'Awesome work on XYZ',
+    channel: '#general',
   });
   await createKudosVc(dao1Punk2, dao1Punk3, daoName1, {
     message: 'Thanks for helping with the hackathon',
     description: 'Couldn\'t have done it without you!',
+    channel: '#general',
   });
   await createSecondedKudosVc(dao1Punk3,
     vc1.credentialSubject.credentialId,

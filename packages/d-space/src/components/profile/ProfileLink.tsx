@@ -5,7 +5,7 @@ import { TrophyOutlined } from '@ant-design/icons';
 import { SizeType } from "antd/lib/config-provider/SizeContext";
 
 type Props = {
-  title: string
+  title?: string
   size?: SizeType,
   badgeCount?: number,
   isTile?: boolean,
@@ -38,7 +38,8 @@ const ProfileLink: FC<Props> = ({
       <Avatar
         size={avatarSize}
         src={src || defaultUrl}
-      /> <div className="ProfileLink--title">{title} {badgeCount && <Badge className="ProfileLink--badge" count={<><TrophyOutlined /> {badgeCount}</>} />}</div>
+      />
+      <div className="ProfileLink--title">{title} {badgeCount && <Badge className="ProfileLink--badge" count={<><TrophyOutlined /> {badgeCount}</>} />}</div>
     </Button>
   );
 };

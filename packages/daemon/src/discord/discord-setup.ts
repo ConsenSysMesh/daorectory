@@ -6,7 +6,7 @@ import {
   createPunkProfileVc, createSecondedKudosVc, findSecondedKudos,
 } from '../veramo/did-manager';
 import { userMention } from '@discordjs/builders';
-import { Message, MessageEmbed } from 'discord.js';
+import { GuildChannel, Message, MessageEmbed } from 'discord.js';
 import _ from 'lodash';
 
 console.log('Starting Daemon Discord bot...');
@@ -54,9 +54,12 @@ discordClient.on('interactionCreate', async (interaction) => {
         });
         console.log(recipientVc, fromVc);
 
+        const channel = interaction.channel as GuildChannel;
+
         const vc = await createKudosVc(recipient.id, interaction.user.id, interaction.guildId, {
           message,
           description: regarding,
+          channel: `#${channel.name}`,
         });
 
         console.log('Issued kudos VC:', vc);

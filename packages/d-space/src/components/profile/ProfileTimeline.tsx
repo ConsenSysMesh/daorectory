@@ -1,28 +1,48 @@
-import React from 'react';
+import React, { FC, useContext, useMemo } from 'react';
 import {Timeline} from "antd";
 import { ClockCircleOutlined, CalendarOutlined } from "@ant-design/icons";
-import ProfileCard from "./ProfileCard";
+import KudoCard from "./KudoCard";
+import { KudosVc, SecondedKudosVc } from '@sobol/daemon-types/veramo-types';
+import { AppContext } from '../../App';
+import _ from 'lodash';
 
-const ProfileTimeline = () => {
+type Props = {
+  kudos: KudosVc[],
+  secondedKudos: SecondedKudosVc[],
+};
+
+const KudosTimelineItem: FC<{ kudos: KudosVc, secondedKudos: SecondedKudosVc[] }> = ({
+  kudos,
+  secondedKudos,
+}) => {
+  const { daoProfilesById, punkProfilesById } = useContext(AppContext);
+  const issuerPunk = punkProfilesById[kudos.credentialSubject.issuerId];
+  const dao = daoProfilesById[kudos.credentialSubject.daoId];
+
+  const seconders = useMemo(() =>
+    secondedKudos.filter(k => k.credentialSubject.originalKudosId === kudos.credentialSubject.credentialId),
+    [secondedKudos],
+  );
+
+  return (
+    <Timeline.Item className="ProfileTimeline--item">
+      <KudoCard
+        issuerProfile={issuerPunk}
+        dao={dao}
+        regarding={kudos.credentialSubject.description}
+        channel={kudos.credentialSubject.channel}
+        seconders={seconders.length}
+      />
+    </Timeline.Item>
+  )
+}
+
+const ProfileTimeline: FC<Props> = ({ kudos, secondedKudos }) => {
   return (
     <Timeline className="ProfileTimeline">
       <Timeline.Item className="ProfileTimeline--year" dot={<CalendarOutlined />}>2021</Timeline.Item>
       <Timeline.Item className="ProfileTimeline--month" dot={<ClockCircleOutlined />}>Sept 21</Timeline.Item>
-      <Timeline.Item className="ProfileTimeline--item">
-        <ProfileCard title="Some title" />
-      </Timeline.Item>
-      <Timeline.Item className="ProfileTimeline--item">
-        <ProfileCard title="Some title" />
-      </Timeline.Item>
-      <Timeline.Item className="ProfileTimeline--item">
-        <ProfileCard title="Some title" />
-      </Timeline.Item>
-      <Timeline.Item className="ProfileTimeline--item">
-        <ProfileCard title="Some title" />
-      </Timeline.Item>
-      <Timeline.Item className="ProfileTimeline--item">
-        <ProfileCard title="Some title" />
-      </Timeline.Item>
+      {_.sortBy(kudos, 'issuanceDate').reverse().map(k => <KudosTimelineItem kudos={k} secondedKudos={secondedKudos} key={k.credentialSubject.credentialId} />)}
     </Timeline>
   );
 };

@@ -3,12 +3,23 @@ import { Card, Modal } from "antd";
 import ProfileLink from "./ProfileLink";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { darcula } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { DaoProfileVc, PunkProfileVc } from '@sobol/daemon-types/veramo-types';
 
 type Props = {
-  title: string
+  issuerProfile?: PunkProfileVc,
+  dao?: DaoProfileVc,
+  regarding: string,
+  channel: string,
+  seconders: number,
 }
 
-const ProfileCard: FC<Props> = ({ title = 'Funk Punk' }) => {
+const KudoCard: FC<Props> = ({
+  issuerProfile,
+  dao,
+  regarding,
+  channel,
+  seconders,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const cardButtons = (
@@ -31,13 +42,23 @@ const ProfileCard: FC<Props> = ({ title = 'Funk Punk' }) => {
   return (
     <>
       <Card
-        title={(<><ProfileLink title={title} size="large" /> {dot} DID</>)}
+        title={<>
+          <ProfileLink
+            title={issuerProfile?.credentialSubject?.name || ''}
+            src={issuerProfile?.credentialSubject?.avatarUrl}
+            size="large"
+          /> {dot} DID
+        </>}
         actions={[cardButtons]}
         className="ProfileCard"
       >
-        <p>Nullam placerat ex eu orci euismod, a vulputate risus ornare. Nulla sed finibus odio. Donec elementum nulla quam, non aliquet odio efficitur ut.</p>
+        <p>{regarding}</p>
         <div className="ProfileCard--info">
-          <ProfileLink title="Funk Punk" size="small" /> {dot} #media-station {dot} DID {dot} Seconders (2)
+          <ProfileLink
+            title={dao?.credentialSubject?.name}
+            src={dao?.credentialSubject?.avatarUrl}
+            size="small"
+          /> {dot} {channel} {dot} DID {dot} Seconders ({seconders})
         </div>
       </Card>
 
@@ -55,4 +76,4 @@ const ProfileCard: FC<Props> = ({ title = 'Funk Punk' }) => {
   );
 };
 
-export default ProfileCard;
+export default KudoCard;

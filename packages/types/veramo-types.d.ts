@@ -35,6 +35,9 @@ export declare type KudosVc = DaemonVc & {
     message: string,
     description: string,
     daoId: string, // for ease of relating VCs received within a specific DAO
+    daoDid: string, // for ease of relating VCs received within a specific DAO
+    issuerId: string;
+    channel: string;
   },
 }
 
@@ -43,6 +46,7 @@ export declare type SecondedKudosVc = DaemonVc & {
     originalKudosId: string, // reference to credentialId of the original kudos
     message?: string, // optional msg to go with +1 sentiment
     daoId: string, // for ease of relating VCs received within a specific DAO
+    daoDid: string, // for ease of relating VCs received within a specific DAO
     issuerId: string;
   },
 }

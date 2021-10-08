@@ -186,7 +186,7 @@ export const createKudosVc = async (
   forPunk: string,
   fromPunk: string,
   daoName: string,
-  kudos: Omit<KudosVc['credentialSubject'], 'credentialId' | 'id' | 'daoId'>,
+  kudos: Omit<KudosVc['credentialSubject'], 'credentialId' | 'id' | 'daoId' | 'daoDid' | 'issuerId'>,
 ): Promise<KudosVc> => {
   const forDid = await findOrCreatePunk(forPunk);
   const fromDid = await findOrCreatePunk(fromPunk);
@@ -198,7 +198,9 @@ export const createKudosVc = async (
     // resolving the DAO's did here based on its name
     {
       ...kudos,
-      daoId: daoDid.did,
+      issuerId: fromPunk,
+      daoId: daoName,
+      daoDid: daoDid.did,
     });
 };
 
@@ -218,6 +220,7 @@ export const createSecondedKudosVc = async (fromPunk: string, originalKudosVcId:
       originalKudosId: originalKudosVcId,
       issuerId: fromPunk,
       daoId: credentialSubject.daoId,
+      daoDid: credentialSubject.daoDid,
     });
 };
 
