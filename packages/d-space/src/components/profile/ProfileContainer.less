@@ -5,7 +5,7 @@
   padding: 32px;
   margin-right: auto;
   margin-left: auto;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   background: #2E2F3E;
 
   hr {
@@ -26,11 +26,23 @@
     margin-left: auto;
     margin-top: 60px;
 
-    .ant-btn {
+    .ant-btn-primary {
       margin-right: 16px;
       background: linear-gradient(90deg, #4A56D4 0%, #823ADC 99.82%, #4A56D4 197.42%);
       border-radius: 4px;
       color: #F7F7F8;
+    }
+
+    .ant-btn:not(.ant-btn-primary) {
+      color: rgba(118, 132, 231, 1);
+      border-color: rgba(118, 132, 231, 1);
+      background: linear-gradient(rgba(118, 132, 231, 1), rgba(162, 98, 231, 1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      &:focus {
+        -webkit-text-fill-color: unset;
+      }
     }
   }
 

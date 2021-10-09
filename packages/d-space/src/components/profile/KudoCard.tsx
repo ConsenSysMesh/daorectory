@@ -30,7 +30,7 @@ const KudoCard: FC<Props> = ({
       className="ProfileCard--button"
       onClick={() => setModalVisible(true)}
     >
-        View Details
+        View Claim
     </div>
   );
 
@@ -70,7 +70,7 @@ const KudoCard: FC<Props> = ({
       </Card>
 
       <Modal
-        title="Details"
+        title="Verifiable Claim (VC)"
         visible={modalVisible}
         onCancel={handleOk}
         footer={null}
