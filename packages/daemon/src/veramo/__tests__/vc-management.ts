@@ -164,7 +164,7 @@ describe('did-manager', () => {
     expect(credentialSubject.credentialId).not.toBeNil();
     expect(verifiableCredential.issuer.id).toEqual(fromDid.did);
     expect(credentialSubject.id).toEqual(forDid.did);
-    expect(credentialSubject.daoId).toEqual(daoDid.did);
+    expect(credentialSubject.daoDid).toEqual(daoDid.did);
     expect(credentialSubject.message).toEqual('You did great!');
     expect(credentialSubject.description).toEqual('Regarding the thing');
   });
@@ -188,7 +188,7 @@ describe('did-manager', () => {
     expect(verifiableCredential.issuer.id).not.toBeNil();
     expect(credentialSubject.id).not.toBeNil();
     expect(credentialSubject.credentialId).not.toBeNil();
-    expect(credentialSubject.daoId).toEqual(daoDid.did);
+    expect(credentialSubject.daoDid).toEqual(daoDid.did);
     expect(credentialSubject.message).toEqual('You did great!2');
     expect(credentialSubject.description).toEqual('Regarding the thing2');
   });
@@ -212,7 +212,7 @@ describe('did-manager', () => {
     expect(verifiableCredential.issuer.id).not.toBeNil();
     expect(credentialSubject.id).not.toBeNil();
     expect(credentialSubject.credentialId).not.toBeNil();
-    expect(credentialSubject.daoId).toEqual(daoDid.did);
+    expect(credentialSubject.daoDid).toEqual(daoDid.did);
     expect(credentialSubject.message).toEqual('You did great!3');
     expect(credentialSubject.description).toEqual('Regarding the thing3');
   });
@@ -235,7 +235,7 @@ describe('did-manager', () => {
     expect(verifiableCredential.issuer.id).not.toBeNil();
     expect(credentialSubject.id).not.toBeNil();
     expect(credentialSubject.credentialId).not.toBeNil();
-    expect(credentialSubject.daoId).toEqual(daoDid.did);
+    expect(credentialSubject.daoDid).toEqual(daoDid.did);
     expect(credentialSubject.message).toEqual('You did great!4');
     expect(credentialSubject.description).toEqual('Regarding the thing4');
   });
@@ -264,7 +264,7 @@ describe('did-manager', () => {
     expect(verifiableCredential.issuer.id).toEqual(fromDid.did);
     expect(credentialSubject.id).toEqual(forDid.did);
     expect(credentialSubject.credentialId).not.toBeNil();
-    expect(credentialSubject.daoId).toEqual(daoDid.did);
+    expect(credentialSubject.daoDid).toEqual(daoDid.did);
     expect(credentialSubject.originalKudosId).toEqual(kudos.credentialSubject.credentialId);
   });
 });

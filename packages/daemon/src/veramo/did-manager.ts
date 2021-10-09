@@ -28,6 +28,8 @@ export enum VcTypes {
   SecondedKudos = 'secondedKudos',
 }
 
+const placeholderBlurb = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+
 // requires calling initVeramo to create this local singleton agent and dbConnection
 let agent: TAgent<IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & ICredentialIssuer>;
 let dbConnection: Connection;
@@ -157,6 +159,9 @@ export const createDaoProfileVc = async (
   const forDid = await findOrCreateDao(forDao);
   const didVcs = await findVcsForDao(forDao, VcTypes.DaoProfile);
   if (didVcs.length > 0) return didVcs[0].verifiableCredential as DaoProfileVc;
+  if (!profile.blurb) {
+    profile.blurb = placeholderBlurb;
+  }
   return await _createVc<DaoProfileVc>(
     forDid.did,
     daemonId,
@@ -178,11 +183,13 @@ export const createPunkProfileVc = async (
   const forDid = await findOrCreatePunk(forPunk);
   const didVcs = await findVcsForPunk(forPunk, VcTypes.PunkProfile);
   if (didVcs.length > 0) return didVcs[0].verifiableCredential as PunkProfileVc;
+  if (!profile.blurb) {
+    profile.blurb = placeholderBlurb;
+  }
   return await _createVc<PunkProfileVc>(
     forDid.did,
     daemonId,
     VcTypes.PunkProfile,
-    // resolving the DAO's did here based on its name
     profile,
   );
 };

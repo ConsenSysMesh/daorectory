@@ -2789,7 +2789,7 @@ __metadata:
     "@veramo/key-manager": ^3.0.0
     "@veramo/kms-local": ^3.0.0
     cors: ^2.8.5
-    did-resolver: 3.1.1
+    did-resolver: 3.1.2
     discord-api-types: ^0.23.1
     discord.js: ^13.1.0
     dotenv: ^10.0.0
@@ -7385,14 +7385,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"did-resolver@npm:3.1.1":
-  version: 3.1.1
-  resolution: "did-resolver@npm:3.1.1"
-  checksum: f85e3b1311c9bfab0960c89e15633c176adb9da0c9f0ab29312716d6c9e11869b9ca0f1eb5acd0d95dda36abb360d43a5b66631c4aaa2ac595512ed046ae86b5
-  languageName: node
-  linkType: hard
-
-"did-resolver@npm:^3.1.0, did-resolver@npm:^3.1.1":
+"did-resolver@npm:3.1.2, did-resolver@npm:^3.1.0, did-resolver@npm:^3.1.1":
   version: 3.1.2
   resolution: "did-resolver@npm:3.1.2"
   checksum: 2275664629f81b3d9dc2c1f486f0e504003ec665e8d09ade10611d0a3103bfca203516657ef0a51dd9d3a7d1e34c1e955ce5ad05635c683d8bf257f817e08ce0

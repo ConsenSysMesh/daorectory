@@ -35,7 +35,7 @@
     "@veramo/key-manager": "^3.0.0",
     "@veramo/kms-local": "^3.0.0",
     "cors": "^2.8.5",
-    "did-resolver": "3.1.1",
+    "did-resolver": "3.1.2",
     "discord-api-types": "^0.23.1",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",

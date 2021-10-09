@@ -18,6 +18,7 @@ export declare type DaoProfileVc = DaemonVc & {
     name: string,
     discordId: string,
     avatarUrl: string,
+    blurb?: string,
   }
 }
 
@@ -27,6 +28,7 @@ export declare type PunkProfileVc = DaemonVc & {
     handle: string,
     discordId: string,
     avatarUrl: string,
+    blurb?: string,
   }
 }
 
