@@ -12,7 +12,10 @@
     "get-secrets": "aws s3 cp s3://tmnt-secrets-development/ethonline2021/.env secrets && touch packages/daemon/.env && cat secrets >> packages/daemon/.env && rm secrets",
     "test": "yarn run jest --config=jest/jest.config.js",
     "start": "yarn pm2 start pm2.config.cjs --no-autorestart",
-    "stop": "pm2 stop all && pm2 delete all",
+    "stop": "yarn pm2 stop all && yarn pm2 delete all",
+    "api-logs": "yarn pm2 logs daorectory-api",
+    "api-build-logs": "yarn pm2 logs daorectory-api-build",
+    "ui-logs": "yarn pm2 logs daorectory-ui",
     "connect": "aws ssm start-session --target i-0ebf6ea61528ad033"
   },
   "devDependencies": {
