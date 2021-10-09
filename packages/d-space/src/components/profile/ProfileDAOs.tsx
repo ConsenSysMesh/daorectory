@@ -7,6 +7,8 @@ import _ from 'lodash';
 import { AppContext } from '../../App';
 import { Objects } from '../../config/constants';
 
+const routePrefix = process.env.REACT_APP_ENV_PREFIX;
+
 const ProfileDAOs: FC<{ kudos: KudosVc[] }> = ({ kudos }) => {
   const { daoProfilesById } = useContext(AppContext);
   const daoIds = useMemo(() => Object.entries(
@@ -21,7 +23,7 @@ const ProfileDAOs: FC<{ kudos: KudosVc[] }> = ({ kudos }) => {
         return (
           <ProfileLink
             title={dao?.credentialSubject?.name}
-            to={`/${Objects.Dao}/${daoId}`}
+            to={`${routePrefix}/${Objects.Dao}/${daoId}`}
             src={dao?.credentialSubject?.avatarUrl}
             isTile
             badgeCount={ks.length}

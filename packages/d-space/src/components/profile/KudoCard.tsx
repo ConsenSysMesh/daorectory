@@ -15,6 +15,8 @@ type Props = {
   seconders: number,
 }
 
+const routePrefix = process.env.REACT_APP_ENV_PREFIX;
+
 const KudoCard: FC<Props> = ({
   kudos,
   issuerProfile,
@@ -49,7 +51,7 @@ const KudoCard: FC<Props> = ({
           <>
             <ProfileLink
               title={issuerProfile?.credentialSubject?.name || ''}
-              to={`/${Objects.Punk}/${issuerProfile?.credentialSubject?.discordId}`}
+              to={`${routePrefix}/${Objects.Punk}/${issuerProfile?.credentialSubject?.discordId}`}
               src={issuerProfile?.credentialSubject?.avatarUrl}
               size="large"
             /> {dot} DID
@@ -63,7 +65,7 @@ const KudoCard: FC<Props> = ({
           <ProfileLink
             title={dao?.credentialSubject?.name}
             src={dao?.credentialSubject?.avatarUrl}
-            to={`/${Objects.Dao}/${dao?.credentialSubject?.discordId}`}
+            to={`${routePrefix}/${Objects.Dao}/${dao?.credentialSubject?.discordId}`}
             size="small"
           /> {dot} {channel} {dot} DID {dot} Seconders ({seconders})
         </div>
