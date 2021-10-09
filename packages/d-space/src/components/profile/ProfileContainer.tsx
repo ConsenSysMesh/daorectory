@@ -24,7 +24,7 @@ type Props = {
   secondedKudos: SecondedKudosVc[],
 }
 
-const isProfilePunk = (profile: DaemonVc | null, type: string): profile is PunkProfileVc => type === Objects.Punk;
+export const isProfilePunk = (profile: DaemonVc | null, type: string): profile is PunkProfileVc => type === Objects.Punk;
 
 const ProfileContainer: FC<Props> = ({
  profile,
@@ -73,7 +73,7 @@ const ProfileContainer: FC<Props> = ({
               <p>Nullam placerat ex eu orci euismod, a vulputate risus ornare. Nulla sed finibus odio. Donec elementum nulla quam, non aliquet odio efficitur ut. Curabitur et eleifend leo. Quisque ut turpis sit amet purus bibendum fermentum. Proin nulla magna, eleifend eu congue sed, sollicitudin ac felis. Praesent sed ornare leo. Donec vehicula, odio id molestie congue, ante quam posuere dolor, sit amet varius odio purus quis nisi.</p>
             </ProfileSection>
             <ProfileSection spaced>
-              <h2>{isPunk ? 'My DAOs' : 'My Punks'}</h2>
+              <h2>{isPunk ? 'Member Of' : 'Members'}</h2>
               { isPunk
                 ? <ProfileDAOs kudos={kudos} />
                 : <ProfilePunks daoId={profile?.credentialSubject?.discordId} />}

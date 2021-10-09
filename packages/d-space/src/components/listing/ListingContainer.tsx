@@ -13,7 +13,7 @@ const ListingContainer: FC<Props> = ({ type, objects }) => (
     <div className="ListingContainer">
       <div className="ListingContainer--title">
         <h1>D-Space</h1>
-        <p>Resistance is futile. Bow down to our daemon overlord.</p>
+        <p>A curated directory of DAOs and Punks that are up to amazing stuff.</p>
       </div>
 
       <div className="ListingContainer--container">

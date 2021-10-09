@@ -42,7 +42,7 @@ const ProfileTimeline: FC<Props> = ({ kudos, secondedKudos }) => {
   return (
     <Timeline className="ProfileTimeline">
       <Timeline.Item className="ProfileTimeline--year" dot={<CalendarOutlined />}>2021</Timeline.Item>
-      <Timeline.Item className="ProfileTimeline--month" dot={<ClockCircleOutlined />}>Sept 21</Timeline.Item>
+      <Timeline.Item className="ProfileTimeline--month" dot={<ClockCircleOutlined />}>Oct 8</Timeline.Item>
       {_.sortBy(kudos, 'issuanceDate').reverse().map(k => <KudosTimelineItem kudos={k} secondedKudos={secondedKudos} key={k.credentialSubject.credentialId} />)}
     </Timeline>
   );

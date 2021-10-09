@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import {Space} from "antd";
+import { Space, Empty } from "antd";
 import ProfileLink from "./ProfileLink";
 import { FC } from 'react';
 import { AppContext } from '../../App';
@@ -13,7 +13,7 @@ const ProfilePunks: FC<{ daoId?: string }> = ({ daoId }) => {
       }),
     [kudosByPunkId, daoId],
   );
-  return (
+  return (punks.length ?
     <Space size={[0, 0]} wrap className="ProfileContainer--work">
       {punks.map(([punkId, kudos]) => {
         const punk = punkProfilesById[punkId];
@@ -27,7 +27,7 @@ const ProfilePunks: FC<{ daoId?: string }> = ({ daoId }) => {
           />
         );
       })}
-    </Space>
+    </Space> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Members Found" />
   );
 };
 

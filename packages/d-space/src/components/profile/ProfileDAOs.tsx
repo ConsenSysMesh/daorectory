@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import {Space} from "antd";
+import { Empty, Space } from "antd";
 import ProfileLink from "./ProfileLink";
 import { FC } from 'react';
 import { KudosVc } from '@sobol/daemon-types/veramo-types';
@@ -13,7 +13,7 @@ const ProfileDAOs: FC<{ kudos: KudosVc[] }> = ({ kudos }) => {
     _.groupBy(kudos, k => k.credentialSubject.daoId)),
     [kudos],
   );
-  return (
+  return (daoIds.length ?
     <Space size={[0, 0]} wrap className="ProfileContainer--work">
       {daoIds.map(([daoId, ks]) => {
         const dao = daoProfilesById[daoId];
@@ -28,7 +28,7 @@ const ProfileDAOs: FC<{ kudos: KudosVc[] }> = ({ kudos }) => {
           />
         );
       })}
-    </Space>
+    </Space> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Memberships Found" />
   );
 };
 
