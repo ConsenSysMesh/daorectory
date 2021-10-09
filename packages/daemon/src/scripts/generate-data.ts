@@ -1,5 +1,7 @@
 import '../env';
 import _ from 'lodash';
+import faker from 'faker/locale/en';
+
 import {
   initVeramo,
   createDaoProfileVc,
@@ -8,7 +10,15 @@ import {
   createSecondedKudosVc
 } from '../veramo/did-manager';
 
+const daoDiscordIds: string[] = [];
+const punkDiscordIds: string[] = [];
+const kudosIds: string[] = [];
 const _discId = (name:string) => _.snakeCase(name);
+const _getRandom = (col:string[]) => col[Math.floor(Math.random()*col.length)]
+const _getRandomDao = () => _getRandom(daoDiscordIds);
+const _getRandomPunk = () => _getRandom(punkDiscordIds);
+const _getRandomKudos = () => _getRandom(kudosIds);
+
 const createDaoProfile = async (params: {name:string, blurb:string, avatarUrl:string}) => {
   const { name, ...rest } = params;
   const discordId = _discId(name);
@@ -17,6 +27,7 @@ const createDaoProfile = async (params: {name:string, blurb:string, avatarUrl:st
     discordId,
     ...rest,
   });
+  daoDiscordIds.push(discordId);
   return discordId;
 }
 const createPunkProfile = async (params: {name:string, blurb?:string, avatarUrl:string}) => {
@@ -29,12 +40,23 @@ const createPunkProfile = async (params: {name:string, blurb?:string, avatarUrl:
     discordId,
     ...rest,
   });
+  punkDiscordIds.push(discordId);
   return discordId;
+}
+const createKudos = async (punk1:string, punk2?:string, dao:string) => {
+  const kudosVc = await createKudosVc(punk1, punk2, dao, {
+    message: faker.hacker.phrase(),
+    description: faker.hacker.phrase(),
+    channel: `#${faker.hacker.verb()}-${faker.hacker.noun()}`,
+  });
+  const credId = kudosVc.credentialSubject.credentialId;
+  kudosIds.push(credId);
+  return credId;
 }
 const main = async () => {
   await initVeramo(); // creates Daemon service DID if none exists
 
-  // ======= DAO 1 =======
+  // =========== hand-crafted content =============
   const ashDiscordId = await createDaoProfile({
     name: 'Ash',
     blurb: '$ASH is a social currency backed by curated extinction. The value, the utility and the identity of $ASH is balanced by its users',
@@ -137,10 +159,32 @@ const main = async () => {
     vc2.credentialSubject.credentialId,
   );
 
-  // TODO: add good looking data to test UI with
+  // =========== randomized content =============
 
-  // ======= DAO 2 =======
+  // Now creating random punks to get data volume
+  for (let i = 0; i < 100; i++) {
+    const rndName = `${faker.hacker.adjective()}${faker.hacker.noun()}`.replace(' ','');
+    const rndDiscordHandle = `${rndName}#${Math.floor(Math.random()*10000)}`;
+    await createPunkProfile({
+      name: rndDiscordHandle,
+      avatarUrl: faker.image.avatar(),
+    });
+  }
 
+  // Now creating random Kudos between random punks within random DAOs..
+  for (let i = 0; i < 100; i++) {
+    const punk1 = _getRandomPunk();
+    const punk2 = _getRandomPunk();
+    const dao = _getRandomDao();
+    await createKudos(punk1, punk2, dao);
+  }
+
+  // No creating random SecondedKudos by random punks for random Kudos..
+  for (let i = 0; i < 100; i++) {
+    const punk = _getRandomPunk();
+    const kudosId = _getRandomKudos();
+    await createSecondedKudosVc(punk, kudosId);
+  }
 
   // await _debugPrints();
 };

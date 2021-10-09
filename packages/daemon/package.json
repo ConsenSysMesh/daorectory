@@ -11,10 +11,12 @@
     "daemon:debug-break": "yarn run nodemon --inspect-brk=localhost:9222 ./dist/index.js",
     "daemon:deploy-commands": "yarn node ./dist/scripts/deploy-commands.js",
     "daemon:generate-data": "yarn node ./dist/scripts/generate-data.js",
+    "daemon:debug-generate-data": "yarn run nodemon ./dist/scripts/generate-data.js",
     "daemon:clear-data": "rm database.sqlite"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
+    "@types/faker": "^5.5.8",
     "@types/lodash": "^4.14.175",
     "@types/node": "^16.9.6",
     "@types/uuid": "^8.3.1",
@@ -41,6 +43,7 @@
     "dotenv": "^10.0.0",
     "ethr-did-resolver": "^4.3.4",
     "express": "^4.17.1",
+    "faker": "^5.5.3",
     "http": "^0.0.1-security",
     "lodash": "^4.17.21",
     "sqlite3": "^5.0.2",

@@ -2776,6 +2776,7 @@ __metadata:
     "@discordjs/rest": ^0.1.0-canary.0
     "@sobol/daemon-types": "workspace:*"
     "@types/cors": ^2.8.12
+    "@types/faker": ^5.5.8
     "@types/lodash": ^4.14.175
     "@types/node": ^16.9.6
     "@types/uuid": ^8.3.1
@@ -2795,6 +2796,7 @@ __metadata:
     dotenv: ^10.0.0
     ethr-did-resolver: ^4.3.4
     express: ^4.17.1
+    faker: ^5.5.3
     http: ^0.0.1-security
     lodash: ^4.17.21
     nodemon: ^2.0.12
@@ -3352,6 +3354,13 @@ __metadata:
     "@types/qs": "*"
     "@types/serve-static": "*"
   checksum: 12a2a0e6c4b993fc0854bec665906788aea0d8ee4392389d7a98a5de1eefdd33c9e1e40a91f3afd274011119c506f7b4126acb97fae62ae20b654974d44cba12
+  languageName: node
+  linkType: hard
+
+"@types/faker@npm:^5.5.8":
+  version: 5.5.8
+  resolution: "@types/faker@npm:5.5.8"
+  checksum: eb642cac279cbaca46001d301284d51f4b9ca90f48b4b8edb9bbf4335edf70e0216ad921690edb2feec6502eb1bc9ed1fe3e3a27efc49f168ece88acfe2e68ac
   languageName: node
   linkType: hard
 
@@ -8654,6 +8663,13 @@ __metadata:
   version: 1.4.0
   resolution: "extsprintf@npm:1.4.0"
   checksum: 184dc8a413eb4b1ff16bdce797340e7ded4d28511d56a1c9afa5a95bcff6ace154063823eaf0206dbbb0d14059d74f382a15c34b7c0636fa74a7e681295eb67e
+  languageName: node
+  linkType: hard
+
+"faker@npm:^5.5.3":
+  version: 5.5.3
+  resolution: "faker@npm:5.5.3"
+  checksum: 684fd64c8d3897e54248f95b4f6319f75d97691b8500cd13adf4af2c28f9204f766c1d1aaa6b41338f0beaaa87256c3132f8708a1a8f189d122b92f6b98081c3
   languageName: node
   linkType: hard
 
