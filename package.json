@@ -10,7 +10,10 @@
   ],
   "scripts": {
     "get-secrets": "aws s3 cp s3://tmnt-secrets-development/ethonline2021/.env secrets && touch packages/daemon/.env && cat secrets >> packages/daemon/.env && rm secrets",
-    "test": "yarn run jest --config=jest/jest.config.js"
+    "test": "yarn run jest --config=jest/jest.config.js",
+    "start": "yarn pm2 start pm2.config.cjs --no-autorestart",
+    "stop": "pm2 stop all && pm2 delete all",
+    "connect": "aws ssm start-session --target i-0ebf6ea61528ad033"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
@@ -23,6 +26,7 @@
     "@veramo/core": "^3.0.0",
     "jest": "26.6.0",
     "jest-extended": "^0.11.5",
+    "pm2": "^5.1.2",
     "typescript": "^4.4.3"
   }
 }
