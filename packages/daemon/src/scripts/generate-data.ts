@@ -8,8 +8,8 @@ import {
   createSecondedKudosVc
 } from '../veramo/did-manager';
 
-const _discId = name => _.snakeCase(name);
-const createDaoProfile = async (params) => {
+const _discId = (name:string) => _.snakeCase(name);
+const createDaoProfile = async (params: {name:string, blurb:string, avatarUrl:string}) => {
   const { name, ...rest } = params;
   const discordId = _discId(name);
   await createDaoProfileVc(discordId, {
