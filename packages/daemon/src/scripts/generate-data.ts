@@ -10,6 +10,11 @@ import {
   createSecondedKudosVc
 } from '../veramo/did-manager';
 
+// Demo content randomization params
+const NumRandomPunks = 100;
+const NumRandomKudos = 100;
+const NumRandomSecondedKudos = 100;
+
 const daoDiscordIds: string[] = [];
 const punkDiscordIds: string[] = [];
 const kudosIds: string[] = [];
@@ -43,7 +48,7 @@ const createPunkProfile = async (params: {name:string, blurb?:string, avatarUrl:
   punkDiscordIds.push(discordId);
   return discordId;
 }
-const createKudos = async (punk1:string, punk2?:string, dao:string) => {
+const createKudos = async (punk1:string, punk2:string, dao:string) => {
   const kudosVc = await createKudosVc(punk1, punk2, dao, {
     message: faker.hacker.phrase(),
     description: faker.hacker.phrase(),
@@ -53,10 +58,11 @@ const createKudos = async (punk1:string, punk2?:string, dao:string) => {
   kudosIds.push(credId);
   return credId;
 }
+
 const main = async () => {
   await initVeramo(); // creates Daemon service DID if none exists
 
-  // =========== hand-crafted content =============
+  // =========== Hand-Crafted Content =============
   const ashDiscordId = await createDaoProfile({
     name: 'Ash',
     blurb: '$ASH is a social currency backed by curated extinction. The value, the utility and the identity of $ASH is balanced by its users',
@@ -118,8 +124,6 @@ const main = async () => {
     avatarUrl: 'https://tmnt-storage-development.s3.us-east-2.amazonaws.com/ethonline2021/12_Whale.jpg',
   });
 
-
-
   const dao1PunkDiscordId = await createPunkProfile({
     name: 'coolDude#1234',
     avatarUrl: 'https://cdn.discordapp.com/avatars/149991825703305217/8e4ec2c92c4fbe31201631ebc81c6289.png?size=512',
@@ -159,10 +163,11 @@ const main = async () => {
     vc2.credentialSubject.credentialId,
   );
 
-  // =========== randomized content =============
+
+  // =========== Randomized Content =============
 
   // Now creating random punks to get data volume
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < NumRandomPunks; i++) {
     const rndName = `${faker.hacker.adjective()}${faker.hacker.noun()}`.replace(' ','');
     const rndDiscordHandle = `${rndName}#${Math.floor(Math.random()*10000)}`;
     await createPunkProfile({
@@ -172,7 +177,7 @@ const main = async () => {
   }
 
   // Now creating random Kudos between random punks within random DAOs..
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < NumRandomKudos; i++) {
     const punk1 = _getRandomPunk();
     const punk2 = _getRandomPunk();
     const dao = _getRandomDao();
@@ -180,7 +185,7 @@ const main = async () => {
   }
 
   // No creating random SecondedKudos by random punks for random Kudos..
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < NumRandomSecondedKudos; i++) {
     const punk = _getRandomPunk();
     const kudosId = _getRandomKudos();
     await createSecondedKudosVc(punk, kudosId);
