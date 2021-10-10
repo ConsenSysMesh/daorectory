@@ -35,10 +35,9 @@ const createDaoProfile = async (params: {name:string, blurb:string, avatarUrl:st
   daoDiscordIds.push(discordId);
   return discordId;
 }
-const createPunkProfile = async (params: {name:string, blurb?:string, avatarUrl:string}) => {
-  const { name, ...rest } = params;
+const createPunkProfile = async (params: {name:string, handle:string, blurb?:string, avatarUrl:string}) => {
+  const { name, handle, ...rest } = params;
   const discordId = _discId(name);
-  const handle = name;
   await createPunkProfileVc(discordId, {
     name,
     handle,
@@ -125,15 +124,18 @@ const main = async () => {
   });
 
   const dao1PunkDiscordId = await createPunkProfile({
-    name: 'coolDude#1234',
+    name: 'coolDude',
+    handle: 'coolDude#1234',
     avatarUrl: 'https://cdn.discordapp.com/avatars/149991825703305217/8e4ec2c92c4fbe31201631ebc81c6289.png?size=512',
   });
   const dao1Punk2DiscordId = await createPunkProfile({
-    name: 'radMan#2345',
+    name: 'radMan',
+    handle: 'radMan#2345',
     avatarUrl: 'https://cdn.discordapp.com/avatars/510489920968589318/9f2fc3dad2d3a2f018b34f593f77cf9e.png?size=512',
   });
   const dao1Punk3DiscordId = await createPunkProfile({
-    name: 'intenseIndividual#3456',
+    name: 'intenseIndividual',
+    handle: 'intenseIndividual#3456',
     avatarUrl: 'https://cdn.discordapp.com/avatars/510490140758507546/f6af831ef51852741a2f430749dfb3bf.png?size=512',
   });
   const vc1 = await createKudosVc(dao1PunkDiscordId, dao1Punk2DiscordId, banklessDiscordId, {
@@ -171,7 +173,8 @@ const main = async () => {
     const rndName = `${faker.hacker.adjective()}${faker.hacker.noun()}`.replace(' ','');
     const rndDiscordHandle = `${rndName}#${Math.floor(Math.random()*10000)}`;
     await createPunkProfile({
-      name: rndDiscordHandle,
+      name: rndName,
+      handle: rndDiscordHandle,
       avatarUrl: faker.image.avatar(),
     });
   }
