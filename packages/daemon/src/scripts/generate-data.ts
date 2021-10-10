@@ -51,7 +51,7 @@ const createKudos = async (punk1:string, punk2:string, dao:string) => {
   const kudosVc = await createKudosVc(punk1, punk2, dao, {
     message: faker.hacker.phrase(),
     description: faker.hacker.phrase(),
-    channel: `#${faker.hacker.verb()}-${faker.hacker.noun()}`,
+    channel: `#${faker.hacker.verb()}-${faker.hacker.noun()}`.replace(' ','-'),
   });
   const credId = kudosVc.credentialSubject.credentialId;
   kudosIds.push(credId);
@@ -124,47 +124,20 @@ const main = async () => {
   });
 
   const dao1PunkDiscordId = await createPunkProfile({
-    name: 'coolDude',
-    handle: 'coolDude#1234',
+    name: '0xStan',
+    handle: '0xStan#1234',
     avatarUrl: 'https://cdn.discordapp.com/avatars/149991825703305217/8e4ec2c92c4fbe31201631ebc81c6289.png?size=512',
   });
   const dao1Punk2DiscordId = await createPunkProfile({
-    name: 'radMan',
-    handle: 'radMan#2345',
+    name: 'vBits',
+    handle: 'vBits#2345',
     avatarUrl: 'https://cdn.discordapp.com/avatars/510489920968589318/9f2fc3dad2d3a2f018b34f593f77cf9e.png?size=512',
   });
   const dao1Punk3DiscordId = await createPunkProfile({
-    name: 'intenseIndividual',
-    handle: 'intenseIndividual#3456',
+    name: 'Fifi_3pp',
+    handle: 'Fifi_3pp#3456',
     avatarUrl: 'https://cdn.discordapp.com/avatars/510490140758507546/f6af831ef51852741a2f430749dfb3bf.png?size=512',
   });
-  const vc1 = await createKudosVc(dao1PunkDiscordId, dao1Punk2DiscordId, banklessDiscordId, {
-    message: 'You\'re awesome!',
-    description: 'Because you did great on the thing! 👏👏👏',
-    channel: '#general',
-  });
-  const vc2 = await createKudosVc(dao1Punk2DiscordId, dao1PunkDiscordId, banklessDiscordId, {
-    message: 'You\'re great!',
-    description: 'Cuz you gave me kudos earlier! 🎉🎉',
-    channel: '#general',
-  });
-  await createKudosVc(dao1PunkDiscordId, dao1Punk3DiscordId, banklessDiscordId, {
-    message: 'You\'ve been killing it lately!',
-    description: 'Awesome work on XYZ',
-    channel: '#general',
-  });
-  await createKudosVc(dao1Punk2DiscordId, dao1Punk3DiscordId, banklessDiscordId, {
-    message: 'Thanks for helping with the hackathon',
-    description: 'Couldn\'t have done it without you!',
-    channel: '#general',
-  });
-  await createSecondedKudosVc(dao1Punk3DiscordId,
-    vc1.credentialSubject.credentialId,
-  );
-  await createSecondedKudosVc(dao1Punk3DiscordId,
-    vc2.credentialSubject.credentialId,
-  );
-
 
   // =========== Randomized Content =============
 
@@ -193,6 +166,34 @@ const main = async () => {
     const kudosId = _getRandomKudos();
     await createSecondedKudosVc(punk, kudosId);
   }
+
+  // Putting these hand-rolled VCs last so they appear first in the lists (chronologically latest)
+  const vc1 = await createKudosVc(dao1PunkDiscordId, dao1Punk2DiscordId, banklessDiscordId, {
+    message: 'Awesome demo of the latest front-end.  It\'s 🔥',
+    description: 'BB-Project Standup',
+    channel: '#dev-guild',
+  });
+  const vc2 = await createKudosVc(dao1Punk2DiscordId, dao1PunkDiscordId, banklessDiscordId, {
+    message: 'LFG! That\'s an awesome way to get the word out 🙏🏻',
+    description: 'Token drop planning',
+    channel: '#ideas',
+  });
+  await createKudosVc(dao1PunkDiscordId, dao1Punk3DiscordId, banklessDiscordId, {
+    message: 'Thanks for the huge lift on the test deploy yesterday. Do you sleep?',
+    description: 'Harberger Tax Solidity Contracts',
+    channel: '#♠️ | alpha-taskforce',
+  });
+  await createKudosVc(dao1Punk2DiscordId, dao1Punk3DiscordId, banklessDiscordId, {
+    message: 'Thanks for helping with the hackathon. Couldn\'t have done it without you! 🏅',
+    description: 'EthOnline 2021',
+    channel: '#general',
+  });
+  await createSecondedKudosVc(dao1Punk3DiscordId,
+    vc1.credentialSubject.credentialId,
+  );
+  await createSecondedKudosVc(dao1Punk3DiscordId,
+    vc2.credentialSubject.credentialId,
+  );
 
   // await _debugPrints();
 };
