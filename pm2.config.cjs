@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'daorectory-ui',
-            script: 'yarn d-space:start',
+            script: 'yarn d-space:start-hosted',
             args: '',
             watch: false,
             env: {
