@@ -16,6 +16,8 @@ import ProfilePunks from './ProfilePunks';
 import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
 import {darcula} from "react-syntax-highlighter/dist/esm/styles/prism";
 
+const routePrefix = process.env.REACT_APP_ENV_PREFIX;
+
 type Props = {
   profile: PunkProfileVc | DaoProfileVc | null,
   type: string,
@@ -63,7 +65,7 @@ const ProfileContainer: FC<Props> = ({
                 <ProfileLink
                   title={profile?.credentialSubject.handle}
                   to="#"
-                  src="/discord.png"
+                  src={`${routePrefix}/discord.png`}
                   size="small"
                 />
               )}
