@@ -62,7 +62,8 @@ const KudoCard: FC<Props> = ({
         actions={[cardButtons]}
         className="ProfileCard"
       >
-        <p>{['.','!','?'].includes(message[message.length-1]) ? `${message} ` : `${message}. `} {description}</p>
+        <p>{['.','!','?'].includes(message[message.length-1]) ? `${message}` : `${message}.`}</p>
+        <p>Regarding: {description}</p>
         <div className="ProfileCard--info">
           <ProfileLink
             title={dao?.credentialSubject?.name}
