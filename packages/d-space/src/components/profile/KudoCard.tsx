@@ -10,7 +10,8 @@ type Props = {
   kudos: KudosVc,
   issuerProfile?: PunkProfileVc,
   dao?: DaoProfileVc,
-  regarding: string,
+  message: string,
+  description: string,
   channel: string,
   seconders: number,
 }
@@ -21,7 +22,8 @@ const KudoCard: FC<Props> = ({
   kudos,
   issuerProfile,
   dao,
-  regarding,
+  message,
+  description,
   channel,
   seconders,
 }) => {
@@ -60,7 +62,7 @@ const KudoCard: FC<Props> = ({
         actions={[cardButtons]}
         className="ProfileCard"
       >
-        <p>{regarding}</p>
+        <p>{['.','!','?'].includes(message[message.length-1]) ? `${message} ` : `${message}. `} {description}</p>
         <div className="ProfileCard--info">
           <ProfileLink
             title={dao?.credentialSubject?.name}
