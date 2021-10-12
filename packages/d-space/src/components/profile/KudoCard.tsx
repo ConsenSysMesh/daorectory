@@ -10,16 +10,20 @@ type Props = {
   kudos: KudosVc,
   issuerProfile?: PunkProfileVc,
   dao?: DaoProfileVc,
-  regarding: string,
+  message: string,
+  description: string,
   channel: string,
   seconders: number,
 }
+
+const routePrefix = process.env.REACT_APP_ENV_PREFIX;
 
 const KudoCard: FC<Props> = ({
   kudos,
   issuerProfile,
   dao,
-  regarding,
+  message,
+  description,
   channel,
   seconders,
 }) => {
@@ -49,7 +53,7 @@ const KudoCard: FC<Props> = ({
           <>
             <ProfileLink
               title={issuerProfile?.credentialSubject?.name || ''}
-              to={`/${Objects.Punk}/${issuerProfile?.credentialSubject?.discordId}`}
+              to={`${routePrefix}/${Objects.Punk}/${issuerProfile?.credentialSubject?.discordId}`}
               src={issuerProfile?.credentialSubject?.avatarUrl}
               size="large"
             /> {dot} DID
@@ -58,12 +62,13 @@ const KudoCard: FC<Props> = ({
         actions={[cardButtons]}
         className="ProfileCard"
       >
-        <p>{regarding}</p>
+        <p>{['.','!','?'].includes(message[message.length-1]) ? `${message}` : `${message}.`}</p>
+        <p>Regarding: {description}</p>
         <div className="ProfileCard--info">
           <ProfileLink
             title={dao?.credentialSubject?.name}
             src={dao?.credentialSubject?.avatarUrl}
-            to={`/${Objects.Dao}/${dao?.credentialSubject?.discordId}`}
+            to={`${routePrefix}/${Objects.Dao}/${dao?.credentialSubject?.discordId}`}
             size="small"
           /> {dot} {channel} {dot} DID {dot} Seconders ({seconders})
         </div>

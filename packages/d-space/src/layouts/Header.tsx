@@ -6,13 +6,15 @@ import { Routes } from "../routes/Router";
 
 const { Header: AntdHeader } = Layout;
 
+const routePrefix = process.env.REACT_APP_ENV_PREFIX;
+
 const Header = () => {
   const { pathname } = useLocation();
 
   return (
     <AntdHeader className="Header">
       <a href="https://sobol.io/" target="_blank"  rel="noreferrer">
-        <img alt="Sobol" src="/logo-dark.png" className="Header--logo" />
+        <img alt="Sobol" src={`${routePrefix}/logo-dark.png`} className="Header--logo" />
       </a>
       <Menu theme="dark" mode="horizontal" selectedKeys={[pathname]} className="Header--menu">
         <Menu.Item key={Routes.Daos}>

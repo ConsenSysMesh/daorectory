@@ -30,7 +30,8 @@ const KudosTimelineItem: FC<{ kudos: KudosVc, secondedKudos: SecondedKudosVc[] }
         kudos={kudos}
         issuerProfile={issuerPunk}
         dao={dao}
-        regarding={kudos.credentialSubject.description}
+        message={kudos.credentialSubject.message}
+        description={kudos.credentialSubject.description}
         channel={kudos.credentialSubject.channel}
         seconders={seconders.length}
       />

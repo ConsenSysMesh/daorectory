@@ -5,6 +5,8 @@ import { FC } from 'react';
 import { AppContext } from '../../App';
 import { Objects } from '../../config/constants';
 
+const routePrefix = process.env.REACT_APP_ENV_PREFIX;
+
 const ProfilePunks: FC<{ daoId?: string }> = ({ daoId }) => {
   const { kudosByPunkId, punkProfilesById } = useContext(AppContext);
   const punks = useMemo(() => Object.entries(kudosByPunkId)
@@ -20,7 +22,7 @@ const ProfilePunks: FC<{ daoId?: string }> = ({ daoId }) => {
         return (
           <ProfileLink
             title={punk?.credentialSubject?.name}
-            to={`/${Objects.Punk}/${punkId}`}
+            to={`${routePrefix}/${Objects.Punk}/${punkId}`}
             src={punk?.credentialSubject?.avatarUrl}
             isTile
             badgeCount={kudos.length}

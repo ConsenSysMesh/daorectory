@@ -5,6 +5,8 @@ import { NavLink } from "react-router-dom";
 import {AppContext} from "../../App";
 import { isProfilePunk } from "../profile/ProfileContainer";
 
+const routePrefix = process.env.REACT_APP_ENV_PREFIX;
+
 type Props = {
   object: DaoProfileVc | PunkProfileVc,
   type: string,
@@ -16,7 +18,7 @@ const ListingCard: FC<Props> = ({
 }) => {
   const isPunk = isProfilePunk(object, type);
   const { credentialSubject: { avatarUrl, name, discordId } } = object;
-  const url = `/${type}/${discordId}`;
+  const url = `${routePrefix}/${type}/${discordId}`;
 
   const { kudosByPunkId } = useContext(AppContext);
   const punks = useMemo(() => Object.entries(kudosByPunkId)
@@ -32,7 +34,7 @@ const ListingCard: FC<Props> = ({
       <Card
         className="ListingCard"
         hoverable
-        // cover={<img alt="example" src="/card-bg.png" />}
+        // cover={<img alt="example" src={`${routePrefix}/card-bg.png`} />}
       >
         <div className="ListingCard--body">
           <div className="ListingCard--avatar">

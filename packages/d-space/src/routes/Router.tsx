@@ -10,11 +10,13 @@ import Listing from "./Listing";
 import Profile from "./Profile";
 import { Objects, Pages } from "../config/constants";
 
+const routePrefix = process.env.REACT_APP_ENV_PREFIX;
+
 export const Routes = {
-  Daos: `/${Pages.Daos}`,
-  Punks: `/${Pages.Punks}`,
-  Dao: `/${Pages.Dao}/:id`,
-  Punk: `/${Pages.Punk}/:id`,
+  Daos: `${routePrefix}/${Pages.Daos}`,
+  Punks: `${routePrefix}/${Pages.Punks}`,
+  Dao: `${routePrefix}/${Pages.Dao}/:id`,
+  Punk: `${routePrefix}/${Pages.Punk}/:id`,
 };
 
 const Router = () => {

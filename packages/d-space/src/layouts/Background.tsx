@@ -1,6 +1,8 @@
 import React from 'react';
 
-const background = "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #181A25 100%), url('/bg.jpg')"
+const routePrefix = process.env.REACT_APP_ENV_PREFIX;
+
+const background = `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #181A25 100%), url('${routePrefix}/bg.jpg')`
 
 const Background = () => (
   <div className="Background">
